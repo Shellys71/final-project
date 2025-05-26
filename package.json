@@ -1,0 +1,26 @@
+{
+  "name": "final-project",
+  "version": "1.0.0",
+  "description": "Knowledge Security Project",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Shellys71/final-project.git"
+  },
+  "keywords": [],
+  "author": "Shelluluillilloolly",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/Shellys71/final-project/issues"
+  },
+  "homepage": "https://github.com/Shellys71/final-project#readme",
+  "dependencies": {
+    "express": "^5.1.0",
+    "mongoose": "^8.15.0",
+    "nodemon": "^3.1.10"
+  }
+}
