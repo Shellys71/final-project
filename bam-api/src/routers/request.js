@@ -17,53 +17,58 @@ router.post("/requests", auth, async (req, res) => {
   }
 });
 
+// GET /requests?state=pending/approved/rejected
+// GET /requests?limit=10&skip=10
+// GET /requests?from=2025-05-28&until=2025-05-29
+// GET /requests?description=To+code+the+card
+// GET /requests?owner=68360a0c536d6cc9efee4c4b
 router.get("/requests", auth, async (req, res) => {
   const match = {};
-  const sort = {};
-//   if (req.query.completed) {
-//     match.completed = req.query.completed === "true";
-//   }
+  if (!req.user.isAdmin) {
+    match.owner = req.user._id;
+  }
 
-  if (req.query.sortBy) {
-    const parts = req.query.sortBy.split(":");
-    sort[parts[0]] = parts[1] === "desc" ? -1 : 1;
+  if (req.query.owner) {
+    match.owner = req.query.owner;
+  }
+
+  if (req.query.state) {
+    match.status = {};
+    match.status.state = req.query.state;
+  }
+
+  if (req.query.from || req.query.until) {
+    match.createdAt = {};
+    match.createdAt["$gte"] = new Date(
+      new Date(req.query.from).setHours(0, 0, 0)
+    );
+    match.createdAt["$lte"] = new Date(
+      new Date(req.query.until).setHours(23, 59, 59)
+    );
+  }
+
+  if (req.query.description) {
+    match.description = req.query.description;
   }
 
   try {
-    await req.user.populate({
-      path: "requests",
-      match,
-      options: {
-        limit: parseInt(req.query.limit),
-        skip: parseInt(req.query.skip),
-        sort,
-      },
+    const sortedRequests = await Request.find(match, null, {
+      limit: 50,
+      skip: parseInt(req.query.skip),
     });
-    res.send(req.user.requests);
-  } catch (e) {
-    res.status(500).send();
-  }
-});
-
-router.get("/requests/:id", auth, async (req, res) => {
-  const _id = req.params.id;
-
-  try {
-    const request = await Request.findOne({ _id, owner: req.user._id });
-
-    if (!request) {
-      return res.status(404).send();
-    }
-
-    res.send(request);
+    res.send(sortedRequests);
   } catch (e) {
     res.status(500).send();
   }
 });
 
 router.patch("/requests/:id", auth, async (req, res) => {
+  if (!req.user.isAdmin) {
+    return res.status(401).send("Only admins can update data!");
+  }
+
   const updates = Object.keys(req.body);
-  const allowedUpdates = ["description", "status"];
+  const allowedUpdates = ["status"];
   const isValidOperation = updates.every((update) =>
     allowedUpdates.includes(update)
   );
@@ -75,7 +80,6 @@ router.patch("/requests/:id", auth, async (req, res) => {
   try {
     const request = await Request.findOne({
       _id: req.params.id,
-      owner: req.user._id,
     });
 
     if (!request) {
@@ -87,23 +91,6 @@ router.patch("/requests/:id", auth, async (req, res) => {
     res.send(request);
   } catch (e) {
     res.status(400).send();
-  }
-});
-
-router.delete("/requests/:id", auth, async (req, res) => {
-  try {
-    const request = await Request.findOneAndDelete({
-      _id: req.params.id,
-      owner: req.user._id,
-    });
-
-    if (!request) {
-      return res.status(404).send();
-    }
-
-    res.send(request);
-  } catch (e) {
-    res.status(500).send();
   }
 });
 

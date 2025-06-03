@@ -13,9 +13,15 @@ const requestSchema = mongoose.Schema(
       trim: true,
     },
     status: {
-      type: String,
-      required: true,
-      trim: true,
+      state: {
+        type: String,
+        required: true,
+        trim: true,
+      },
+      details: {
+        type: String,
+        trim: true,
+      },
     },
   },
   {
