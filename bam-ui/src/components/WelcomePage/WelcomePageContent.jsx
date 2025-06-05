@@ -6,12 +6,14 @@ const StartingPageContent = () => {
 
     useEffect(() => {
         const signedUser = JSON.parse(localStorage.getItem("user"));
-        setUserName(signedUser.name);
+        if (signedUser) {
+            setUserName(signedUser.name);
+        }
     }, []);
 
   return (
     <section className={classes.starting}>
-      <h1>ברוך הבא {userName}</h1>
+      <h1>ברוך הבא {userName ? userName : "אורח"}</h1>
     </section>
   );
 };
