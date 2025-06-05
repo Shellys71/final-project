@@ -12,14 +12,6 @@ app.use(express.json());
 app.use(userRouter);
 app.use(requestRouter);
 
-app.get("", (req, res) => {
-    res.json("hola");
-});
-
-app.get("/bam/welcome", (req, res) => {
-  res.json({ message: "welcome to my bam app!" });
-});
-
 // app.post("/api/data", (req, res) => {
 //   const { data } = req.body;
 //   res.json({ received: `Data sent: ${data}` });

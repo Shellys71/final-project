@@ -1,16 +1,19 @@
 import React, { useContext } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 import classes from "./MainNavigation.module.css";
 import AuthContext from "../../store/auth-context";
 
 const MainNavigation = () => {
+  const navigate = useNavigate();
+
   const authCtx = useContext(AuthContext);
 
   const isLoggedIn = authCtx.isLoggedIn;
 
   const logoutHandler = () => {
     authCtx.logout();
+    navigate("/auth");
     // optional: redirect the user
   };
 
@@ -26,12 +29,12 @@ const MainNavigation = () => {
               <Link to="/auth">כניסה</Link>
             </li>
           )}
-          {!isLoggedIn && (
+          {isLoggedIn && (
             <li>
               <Link to="/profile">פרופיל</Link>
             </li>
           )}
-          {!isLoggedIn && (
+          {isLoggedIn && (
             <li>
               <button onClick={logoutHandler}>התנתק</button>
             </li>
