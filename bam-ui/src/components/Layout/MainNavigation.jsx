@@ -31,7 +31,12 @@ const MainNavigation = () => {
           )}
           {isLoggedIn && (
             <li>
-              <Link to="/profile">פרופיל</Link>
+              <Link to="/profile">איזור אישי</Link>
+            </li>
+          )}
+          {isLoggedIn && (
+            <li>
+              <Link to="/requests">בקשה חדשה</Link>
             </li>
           )}
           {isLoggedIn && (

@@ -46,7 +46,6 @@ const AuthForm = () => {
       body = {
         email: enteredEmail,
         password: enteredPassword,
-        returnSecureToken: true,
       };
     } else {
       url = "http://localhost:5000/users";
@@ -55,7 +54,6 @@ const AuthForm = () => {
         idfNumber: enteredIdfNumber,
         email: enteredEmail,
         password: enteredPassword,
-        returnSecureToken: true,
       };
     }
     sendUserRequest(
@@ -74,19 +72,19 @@ const AuthForm = () => {
 
   return (
     <section className={classes.auth}>
-      <h1>{isLogin ? "התחברות" : "הרשמות"}</h1>
+      <h1>{isLogin ? "התחברות" : "הרשמה"}</h1>
       <form onSubmit={submitHandler}>
         {!isLogin && (
           <div className={classes.control}>
             <label htmlFor="name">שם מלא</label>
-            <input type="name" id="name" required ref={nameInputRef} />
+            <input type="text" id="name" required ref={nameInputRef} />
           </div>
         )}
         {!isLogin && (
           <div className={classes.control}>
             <label htmlFor="idfNumber">מספר אישי</label>
             <input
-              type="idfNumber"
+              type="number"
               id="idfNumber"
               required
               ref={idfNumberInputRef}

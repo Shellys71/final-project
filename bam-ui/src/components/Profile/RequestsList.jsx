@@ -11,11 +11,13 @@ const RequestsList = () => {
 
   const authCtx = useContext(AuthContext);
 
+//   const { user } = authCtx;
+
   useEffect(() => {
     sendUserRequest(
       {
         url: "http://localhost:5000/requests",
-        headers: { Authorization: `${authCtx.token}` },
+        headers: { Authorization: authCtx.token },
       },
       (data) => {
         setRequestList(data);
@@ -24,9 +26,11 @@ const RequestsList = () => {
   }, []);
 
   return (
-    <section className={classes.request}>
+    <section>
       {requestList.map((request, index) => (
-        <div key={index}>{request.description}</div>
+        <div className={classes.container} key={index}>
+          {request.description}
+        </div>
       ))}
     </section>
   );

@@ -1,0 +1,15 @@
+.container {
+    position: relative;
+    right: 20%;
+  margin: 1rem 0;
+  color: #003b7a;
+  font-size: 1.25rem;
+  border: 0.1vh solid #003b7a;
+  border-radius: 10px;
+  width: 60%;
+  padding: 2vh;
+}
+
+.container:hover {
+    background-color: #e2f2ff;
+}

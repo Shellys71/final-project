@@ -6,7 +6,7 @@ import AuthPage from "./pages/AuthPage";
 import AuthContext from "./store/auth-context";
 import HomePage from "./pages/HomePage";
 import UserProfile from "./components/Profile/UserProfile";
-
+import RequestsPage from "./pages/RequestsPage";
 
 // import axios from "axios";
 
@@ -20,6 +20,9 @@ function App() {
         {!authCtx.isLoggedIn && <Route path="/auth" element={<AuthPage />} />}
         {authCtx.isLoggedIn && (
           <Route path="/profile" element={<UserProfile />} />
+        )}
+        {authCtx.isLoggedIn && (
+          <Route path="/requests" element={<RequestsPage />} />
         )}
         {!authCtx.isLoggedIn && (
           <Route path="/profile" element={<Navigate to="/auth" />} />
