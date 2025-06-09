@@ -1,15 +1,44 @@
+.section {
+    overflow-x: hidden;
+}
+
+.title {
+  font-size: 2vw;
+  text-align: center;
+}
+
 .container {
-    position: relative;
-    right: 20%;
-  margin: 1rem 0;
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.request {
+  /* position: relative;
+  right: 20%; */
+  margin: 1rem 1rem;
   color: #003b7a;
   font-size: 1.25rem;
   border: 0.1vh solid #003b7a;
   border-radius: 10px;
-  width: 60%;
   padding: 2vh;
 }
 
-.container:hover {
-    background-color: #e2f2ff;
+.request:hover {
+  background-color: #e2f2ff;
+}
+
+.request p {
+  font-size: 1rem;
+  margin: 1vh;
+}
+
+.approved {
+    color: #007000;
+    font-weight: bold;
+}
+
+.rejected {
+    color: #930303;
+    font-weight: bold;
 }

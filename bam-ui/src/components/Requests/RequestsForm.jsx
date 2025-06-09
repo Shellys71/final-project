@@ -26,7 +26,7 @@ const RequestsForm = () => {
       description: enteredDescription,
       explanation: enteredExplanation, 
       status: {
-        state: "opened",
+        state: "pending",
       },
     };
     sendUserRequest({
