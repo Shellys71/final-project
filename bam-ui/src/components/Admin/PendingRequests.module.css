@@ -1,0 +1,64 @@
+.section {
+  overflow-x: hidden;
+}
+
+h1 {
+  text-align: center;
+  font-size: 3rem;
+}
+
+.title {
+  font-size: 2vw;
+  text-align: center;
+}
+
+.container {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.request {
+  margin: 1rem 1rem;
+  color: #003b7a;
+  font-size: 1.25rem;
+  border: 0.1vh solid #003b7a;
+  border-radius: 10px;
+  padding: 2vh;
+}
+
+.request:hover {
+  background-color: #e2f2ff;
+}
+
+.request p {
+  font-size: 1rem;
+  margin: 1vh;
+}
+
+.request button {
+  cursor: pointer;
+  font: inherit;
+  font-size: 1rem;
+  color: white;
+  border-radius: 4px;
+  padding: 0.1rem 2rem;
+  margin: 0.2rem;
+}
+
+.request button:hover {
+  background-color: #4e7cae;
+  border-color: #4e7cae;
+}
+
+.approve {
+  font-weight: bold;
+  background-color: #5ccc89;
+  border: 1px solid #5ccc89;
+}
+
+.reject {
+  font-weight: bold;
+  background-color: #cc5c5c;
+  border: 1px solid #cc5c5c;
+}

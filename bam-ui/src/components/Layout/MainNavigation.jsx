@@ -10,6 +10,7 @@ const MainNavigation = () => {
   const authCtx = useContext(AuthContext);
 
   const isLoggedIn = authCtx.isLoggedIn;
+  const { user } = authCtx;
 
   const logoutHandler = () => {
     authCtx.logout();
@@ -36,7 +37,12 @@ const MainNavigation = () => {
           )}
           {isLoggedIn && (
             <li>
-              <Link to="/requests">בקשה חדשה</Link>
+              <Link to="/requests/create">בקשה חדשה</Link>
+            </li>
+          )}
+          {user && user.isAdmin && (
+            <li>
+              <Link to="/requests/pending">בקשות פתוחות</Link>
             </li>
           )}
           {isLoggedIn && (

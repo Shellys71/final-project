@@ -55,7 +55,7 @@ router.get("/requests", auth, async (req, res) => {
     const sortedRequests = await Request.find(match, null, {
       limit: 50,
       skip: parseInt(req.query.skip),
-    });
+    }).populate("owner");
     res.send(sortedRequests);
   } catch (e) {
     res.status(500).send();
