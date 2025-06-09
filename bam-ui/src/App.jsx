@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useContext } from "react";
 import { Routes, Route, Navigate } from "react-router";
 
 import Layout from "./components/Layout/Layout";

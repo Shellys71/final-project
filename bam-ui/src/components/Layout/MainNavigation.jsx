@@ -7,13 +7,10 @@ import AuthContext from "../../store/auth-context";
 const MainNavigation = () => {
   const navigate = useNavigate();
 
-  const authCtx = useContext(AuthContext);
-
-  const isLoggedIn = authCtx.isLoggedIn;
-  const { user } = authCtx;
+  const { user, isLoggedIn, logout } = useContext(AuthContext);;
 
   const logoutHandler = () => {
-    authCtx.logout();
+    logout();
     navigate("/auth");
     // optional: redirect the user
   };

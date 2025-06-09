@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import classes from "./WelcomePageContent.module.css";
 
-const StartingPageContent = () => {
+const WelcomePageContent = () => {
     const [userName, setUserName] = useState("");
 
     useEffect(() => {
@@ -18,4 +18,4 @@ const StartingPageContent = () => {
   );
 };
 
-export default StartingPageContent;
+export default WelcomePageContent;

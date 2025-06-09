@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext, Fragment } from "react";
+import { useEffect, useState, useContext, Fragment, useCallback } from "react";
 
 import classes from "./RequestsList.module.css";
 import AuthContext from "../../store/auth-context";
@@ -17,7 +17,7 @@ const RequestsList = () => {
   const PENDING_REQUEST = "pending";
   const APPROVED_REQUEST = "approved";
 
-  const setRequestListHandler = (requestsArray) => {
+  const setRequestListHandler = useCallback((requestsArray) => {
     let filteredRequests;
     if (!user.isAdmin) {
       filteredRequests = requestsArray.filter((request) => {
@@ -36,7 +36,7 @@ const RequestsList = () => {
         return request.status.state !== PENDING_REQUEST;
       })
     );
-  };
+  }, [user._id, user.isAdmin]);
 
   useEffect(() => {
     sendUserRequest(
@@ -44,11 +44,9 @@ const RequestsList = () => {
         url: "http://localhost:5000/requests",
         headers: { Authorization: authCtx.token },
       },
-      (data) => {
-        setRequestListHandler(data);
-      }
+      setRequestListHandler
     );
-  }, []);
+  }, [authCtx.token, sendUserRequest, setRequestListHandler]);
 
   return (
     <section className={classes.section}>

@@ -14,7 +14,7 @@ const RequestsList = () => {
   const PENDING_REQUEST = "pending";
   
   const setPendingRequestsHandler = (requestsList) => {
-    const pendingRequests = requestsList.filter((request) => {
+    const pendingRequests = requestsList.filter((request) => { 
       return request.status.state === PENDING_REQUEST;
     });
     setPendingRequestList(pendingRequests);
@@ -26,9 +26,7 @@ const RequestsList = () => {
         url: "http://localhost:5000/requests",
         headers: { Authorization: authCtx.token },
       },
-      (data) => {
-        setPendingRequestsHandler(data);
-      }
+      setPendingRequestsHandler
     );
   }, [sendUserRequest, authCtx.token]);
 
@@ -47,9 +45,7 @@ const RequestsList = () => {
           },
         },
       },
-      (data) => {
-        setPendingRequestsHandler(data);
-      }
+      () => {}
     );
   };
 
@@ -77,6 +73,9 @@ const RequestsList = () => {
                     request._id,
                     "approved"
                   )}
+                // onClick={(event) => {
+                //     changeRequestState(event, request._id)
+                // }}
                 >
                   אשר
                 </button>
