@@ -5,7 +5,8 @@ import AuthContext from "../../store/auth-context";
 import useHttp from "../../hooks/use-http";
 
 const RequestsList = () => {
-  const [requestList, setRequestList] = useState([]);
+  const [pendingRequestList, setPendingRequestList] = useState([]);
+  const [closedRequestList, setClosedRequestList] = useState([]);
 
   const { isLoading, error, sendRequest: sendUserRequest } = useHttp();
 
@@ -25,7 +26,16 @@ const RequestsList = () => {
     } else {
       filteredRequests = requestsArray;
     }
-    setRequestList(filteredRequests);
+    setPendingRequestList(
+      filteredRequests.filter((request) => {
+        return request.status.state === PENDING_REQUEST;
+      })
+    );
+    setClosedRequestList(
+      filteredRequests.filter((request) => {
+        return request.status.state !== PENDING_REQUEST;
+      })
+    );
   };
 
   useEffect(() => {
@@ -42,39 +52,42 @@ const RequestsList = () => {
 
   return (
     <section className={classes.section}>
-      <h2 className={classes.title}>בקשות פתוחות</h2>
-      <div className={classes.container}>
-        {requestList.map(
-          (request, index) =>
-            request.status.state === PENDING_REQUEST && (
+      {isLoading ? (
+        <h2 className={classes.title}>טוען...</h2>
+      ) : (
+        <Fragment>
+          <h2 className={classes.title}>בקשות פתוחות</h2>
+          <div className={classes.container}>
+            {pendingRequestList.map((request, index) => (
               <div className={classes.request} key={index}>
                 {request.description}
                 <br />
                 <p>{request.explanation}</p>
               </div>
-            )
-        )}
-      </div>
-      <h2 className={classes.title}>בקשות סגורות</h2>
-      <div className={classes.container}>
-        {requestList.map(
-          (request, index) =>
-            request.status.state !== PENDING_REQUEST && (
+            ))}
+          </div>
+          <h2 className={classes.title}>בקשות סגורות</h2>
+          <div className={classes.container}>
+            {closedRequestList.map((request, index) => (
               <div className={classes.request} key={index}>
                 {request.status.state === APPROVED_REQUEST ? (
-                  <p className={classes.approved}>מאושרת</p>
+                  <p className={classes.approved}>אושרה</p>
                 ) : (
                   <p className={classes.rejected}>
-                    {request.status.details? `נדחתה: ${request.status.details}` : "נדחתה"}
+                    {request.status.details
+                      ? `נדחתה: ${request.status.details}`
+                      : "נדחתה"}
                   </p>
                 )}
                 {request.description}
                 <br />
                 <p>{request.explanation}</p>
               </div>
-            )
-        )}
-      </div>
+            ))}
+          </div>
+          {error && <p>{error}</p>}
+        </Fragment>
+      )}
     </section>
   );
 };
