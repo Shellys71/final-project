@@ -39,7 +39,7 @@ const MainNavigation = () => {
           )}
           {user && user.isAdmin && (
             <li>
-              <Link to="/requests/pending">בקשות פתוחות</Link>
+              <Link to="/requests/pending">בקשות לאישור</Link>
             </li>
           )}
           {user && user.isAdmin && (

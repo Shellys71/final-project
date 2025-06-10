@@ -4,15 +4,16 @@ import classes from "./PendingRequests.module.css";
 import AuthContext from "../../store/auth-context";
 import useHttp from "../../hooks/use-http";
 import LoadingSpinner from "../UI/LoadingSpinner";
+import PendingRequestItem from "./PendingRequestItem";
 
 const RequestsList = () => {
+  const PENDING_REQUEST = "pending";
+
   const [pendingRequestList, setPendingRequestList] = useState([]);
 
   const { isLoading, error, sendRequest: sendUserRequest } = useHttp();
 
   const authCtx = useContext(AuthContext);
-
-  const PENDING_REQUEST = "pending";
 
   const setPendingRequestsHandler = (requestsList) => {
     const pendingRequests = requestsList.filter((request) => {
@@ -22,6 +23,7 @@ const RequestsList = () => {
   };
 
   useEffect(() => {
+    console.log("hererererere");
     sendUserRequest(
       {
         url: "http://localhost:5000/requests",
@@ -31,7 +33,7 @@ const RequestsList = () => {
     );
   }, [sendUserRequest, authCtx.token]);
 
-  const changeRequestState = (requestId, state) => {
+  const approveRequestState = (requestId) => {
     sendUserRequest(
       {
         url: `http://localhost:5000/requests/${requestId}`,
@@ -42,7 +44,27 @@ const RequestsList = () => {
         },
         body: {
           status: {
-            state,
+            state: "approved",
+          },
+        },
+      },
+      () => {}
+    );
+  };
+
+  const rejectRequestState = (requestId) => {
+    sendUserRequest(
+      {
+        url: `http://localhost:5000/requests/${requestId}`,
+        method: "PATCH",
+        headers: {
+          Authorization: authCtx.token,
+          "Content-Type": "application/json",
+        },
+        body: {
+          status: {
+            state: "rejected",
+            details: "לא ראוי בשיט",
           },
         },
       },
@@ -60,38 +82,15 @@ const RequestsList = () => {
           {error && <p>{error}</p>}
           <div className={classes.container}>
             {pendingRequestList.map((request) => (
-              <div className={classes.request} key={request._id}>
-                <p>שולח הבקשה: {request.owner.name}</p>
-                {request.description}
-                <br />
-                <p>פירוט: {request.explanation}</p>
-                <p>תאריך: {request.createdAt.slice(0, 10)}</p>
-                <button
-                  className={classes.approve}
-                  id="approve"
-                  onClick={changeRequestState.bind(
-                    null,
-                    request._id,
-                    "approved"
-                  )}
-                  // onClick={(event) => {
-                  //     changeRequestState(event, request._id)
-                  // }}
-                >
-                  אשר
-                </button>
-                <button
-                  className={classes.reject}
-                  id="reject"
-                  onClick={changeRequestState.bind(
-                    null,
-                    request._id,
-                    "rejected"
-                  )}
-                >
-                  סרב
-                </button>
-              </div>
+              <PendingRequestItem
+                key={request._id}
+                ownerName={request.owner.name}
+                description={request.description}
+                explanation={request.explanation}
+                createdAt={request.createdAt.slice(0, 10)}
+                onApprove={approveRequestState.bind(null, request._id)}
+                onReject={rejectRequestState.bind(null, request._id)}
+              />
             ))}
           </div>
         </Fragment>
