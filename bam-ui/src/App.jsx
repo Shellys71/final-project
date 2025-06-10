@@ -6,10 +6,9 @@ import AuthPage from "./pages/AuthPage";
 import AuthContext from "./store/auth-context";
 import HomePage from "./pages/HomePage";
 import UserProfile from "./components/Profile/UserProfile";
-import RequestsPage from "./pages/RequestsPage";
+import NewRequestsPage from "./pages/NewRequestsPage";
 import PendingRequestsPage from "./pages/PendingRequestsPage";
-
-// import axios from "axios";
+import RequestsHistoryPage from "./pages/RequestsHistoryPage";
 
 function App() {
   const authCtx = useContext(AuthContext);
@@ -23,10 +22,13 @@ function App() {
           <Route path="/profile" element={<UserProfile />} />
         )}
         {authCtx.isLoggedIn && (
-          <Route path="/requests/create" element={<RequestsPage />} />
+          <Route path="/requests/create" element={<NewRequestsPage />} />
         )}
         {authCtx.isLoggedIn && (
           <Route path="/requests/pending" element={<PendingRequestsPage />} />
+        )}
+        {authCtx.isLoggedIn && (
+          <Route path="/requests/history" element={<RequestsHistoryPage />} />
         )}
         {!authCtx.isLoggedIn && (
           <Route path="/profile" element={<Navigate to="/auth" />} />

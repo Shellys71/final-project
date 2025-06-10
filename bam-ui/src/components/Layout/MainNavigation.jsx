@@ -7,7 +7,7 @@ import AuthContext from "../../store/auth-context";
 const MainNavigation = () => {
   const navigate = useNavigate();
 
-  const { user, isLoggedIn, logout } = useContext(AuthContext);;
+  const { user, isLoggedIn, logout } = useContext(AuthContext);
 
   const logoutHandler = () => {
     logout();
@@ -40,6 +40,11 @@ const MainNavigation = () => {
           {user && user.isAdmin && (
             <li>
               <Link to="/requests/pending">בקשות פתוחות</Link>
+            </li>
+          )}
+          {user && user.isAdmin && (
+            <li>
+              <Link to="/requests/history">היסטוריית בקשות</Link>
             </li>
           )}
           {isLoggedIn && (

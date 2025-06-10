@@ -3,6 +3,7 @@ import React, { useEffect, useState, useContext, Fragment } from "react";
 import classes from "./PendingRequests.module.css";
 import AuthContext from "../../store/auth-context";
 import useHttp from "../../hooks/use-http";
+import LoadingSpinner from "../UI/LoadingSpinner";
 
 const RequestsList = () => {
   const [pendingRequestList, setPendingRequestList] = useState([]);
@@ -12,9 +13,9 @@ const RequestsList = () => {
   const authCtx = useContext(AuthContext);
 
   const PENDING_REQUEST = "pending";
-  
+
   const setPendingRequestsHandler = (requestsList) => {
-    const pendingRequests = requestsList.filter((request) => { 
+    const pendingRequests = requestsList.filter((request) => {
       return request.status.state === PENDING_REQUEST;
     });
     setPendingRequestList(pendingRequests);
@@ -51,15 +52,15 @@ const RequestsList = () => {
 
   return (
     <section className={classes.section}>
+      <h1>בקשות פתוחות</h1>
       {isLoading ? (
-        <h2 className={classes.title}>טוען...</h2>
+        <LoadingSpinner />
       ) : (
         <Fragment>
           {error && <p>{error}</p>}
-          <h1>בקשות פתוחות</h1>
           <div className={classes.container}>
-            {pendingRequestList.map((request, index) => (
-              <div className={classes.request} key={index}>
+            {pendingRequestList.map((request) => (
+              <div className={classes.request} key={request._id}>
                 <p>שולח הבקשה: {request.owner.name}</p>
                 {request.description}
                 <br />
@@ -73,9 +74,9 @@ const RequestsList = () => {
                     request._id,
                     "approved"
                   )}
-                // onClick={(event) => {
-                //     changeRequestState(event, request._id)
-                // }}
+                  // onClick={(event) => {
+                  //     changeRequestState(event, request._id)
+                  // }}
                 >
                   אשר
                 </button>

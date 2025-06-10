@@ -3,6 +3,7 @@ import { useEffect, useState, useContext, Fragment, useCallback } from "react";
 import classes from "./RequestsList.module.css";
 import AuthContext from "../../store/auth-context";
 import useHttp from "../../hooks/use-http";
+import LoadingSpinner from "../UI/LoadingSpinner";
 
 const RequestsList = () => {
   const [pendingRequestList, setPendingRequestList] = useState([]);
@@ -21,7 +22,7 @@ const RequestsList = () => {
     let filteredRequests;
     if (!user.isAdmin) {
       filteredRequests = requestsArray.filter((request) => {
-        return request.owner === user._id;
+        return request.owner._id === user._id;
       });
     } else {
       filteredRequests = requestsArray;
@@ -51,13 +52,13 @@ const RequestsList = () => {
   return (
     <section className={classes.section}>
       {isLoading ? (
-        <h2 className={classes.title}>טוען...</h2>
+        <LoadingSpinner />
       ) : (
         <Fragment>
           <h2 className={classes.title}>בקשות פתוחות</h2>
           <div className={classes.container}>
-            {pendingRequestList.map((request, index) => (
-              <div className={classes.request} key={index}>
+            {pendingRequestList && pendingRequestList.map((request) => (
+              <div className={classes.request} key={request._id}>
                 {request.description}
                 <br />
                 <p>{request.explanation}</p>
@@ -66,8 +67,8 @@ const RequestsList = () => {
           </div>
           <h2 className={classes.title}>בקשות סגורות</h2>
           <div className={classes.container}>
-            {closedRequestList.map((request, index) => (
-              <div className={classes.request} key={index}>
+            {closedRequestList && closedRequestList.map((request) => (
+              <div className={classes.request} key={request._id}>
                 {request.status.state === APPROVED_REQUEST ? (
                   <p className={classes.approved}>אושרה</p>
                 ) : (
