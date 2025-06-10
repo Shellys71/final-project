@@ -1,0 +1,59 @@
+.content {
+  align-items: center;
+  font-weight: bold;
+  font-size: 1.3rem;
+  margin: 1rem;
+}
+
+.content p {
+  text-align: center;
+}
+
+.content label {
+  display: inline-block;
+}
+
+.content textarea {
+  border: 1px black solid;
+  border-radius: 3px;
+  margin: 0vh 2vh;
+  font: inherit;
+  font-size: 1rem;
+}
+
+.content div {
+  display: flex;
+  justify-content: center;
+}
+
+.content button {
+  cursor: pointer;
+  font: inherit;
+  font-size: 1rem;
+  color: white;
+  border-radius: 4px;
+  padding: 0.1rem 2rem;
+  margin: 2rem 0.2rem 0rem;
+}
+
+.approve {
+  font-weight: bold;
+  background-color: #5ccc89;
+  border: 1px solid #5ccc89;
+}
+
+.reject {
+  font-weight: bold;
+  background-color: #cc5c5c;
+  border: 1px solid #cc5c5c;
+}
+
+.approve:hover {
+  background-color: #30bd68;
+  border-color: #30bd68;
+}
+
+.reject:hover {
+  background-color: #b13636;
+  border-color: #b13636;
+}

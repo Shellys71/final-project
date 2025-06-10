@@ -1,15 +1,22 @@
-import React, { useEffect, useState, useContext, Fragment } from "react";
+import React, { useEffect, useState, useContext, useRef } from "react";
 
 import classes from "./PendingRequests.module.css";
 import AuthContext from "../../store/auth-context";
 import useHttp from "../../hooks/use-http";
 import LoadingSpinner from "../UI/LoadingSpinner";
 import PendingRequestItem from "./PendingRequestItem";
+import ChangeStateModal from "./ChangeStateModal";
 
 const RequestsList = () => {
   const PENDING_REQUEST = "pending";
 
   const [pendingRequestList, setPendingRequestList] = useState([]);
+  const [modalIsShown, setModalIsShown] = useState(false);
+  const [selectedState, setSelectedState] = useState("");
+  const [currentRequestId, setCurrentRequestId] = useState("");
+  const [currentRequestOwner, setCurrentRequestOwner] = useState("");
+
+  const detailsInputRef = useRef();
 
   const { isLoading, error, sendRequest: sendUserRequest } = useHttp();
 
@@ -23,7 +30,6 @@ const RequestsList = () => {
   };
 
   useEffect(() => {
-    console.log("hererererere");
     sendUserRequest(
       {
         url: "http://localhost:5000/requests",
@@ -33,10 +39,10 @@ const RequestsList = () => {
     );
   }, [sendUserRequest, authCtx.token]);
 
-  const approveRequestState = (requestId) => {
+  const approvedStateRequest = () => {
     sendUserRequest(
       {
-        url: `http://localhost:5000/requests/${requestId}`,
+        url: `http://localhost:5000/requests/${currentRequestId}`,
         method: "PATCH",
         headers: {
           Authorization: authCtx.token,
@@ -48,14 +54,18 @@ const RequestsList = () => {
           },
         },
       },
-      () => {}
+      hideModalHandler
     );
   };
 
-  const rejectRequestState = (requestId) => {
+  const rejectedStateRequest = () => {
+    let enteredDetails;
+    if (detailsInputRef) {
+      enteredDetails = detailsInputRef.current.value;
+    }
     sendUserRequest(
       {
-        url: `http://localhost:5000/requests/${requestId}`,
+        url: `http://localhost:5000/requests/${currentRequestId}`,
         method: "PATCH",
         headers: {
           Authorization: authCtx.token,
@@ -64,36 +74,70 @@ const RequestsList = () => {
         body: {
           status: {
             state: "rejected",
-            details: "לא ראוי בשיט",
+            details: enteredDetails,
           },
         },
       },
-      () => {}
+      hideModalHandler
     );
+  };
+
+  const hideModalHandler = () => {
+    setModalIsShown(false);
+  };
+
+  const approveRequestHandler = (requestId, ownerName) => {
+    setCurrentRequestOwner(ownerName);
+    setCurrentRequestId(requestId);
+    setModalIsShown(true);
+    setSelectedState("approve");
+  };
+
+  const rejectRequestHandler = (requestId, ownerName) => {
+    setCurrentRequestOwner(ownerName);
+    setCurrentRequestId(requestId);
+    setModalIsShown(true);
+    setSelectedState("reject");
   };
 
   return (
     <section className={classes.section}>
       <h1>בקשות פתוחות</h1>
+      {error && <p>{error}</p>}
       {isLoading ? (
         <LoadingSpinner />
       ) : (
-        <Fragment>
-          {error && <p>{error}</p>}
-          <div className={classes.container}>
-            {pendingRequestList.map((request) => (
-              <PendingRequestItem
-                key={request._id}
-                ownerName={request.owner.name}
-                description={request.description}
-                explanation={request.explanation}
-                createdAt={request.createdAt.slice(0, 10)}
-                onApprove={approveRequestState.bind(null, request._id)}
-                onReject={rejectRequestState.bind(null, request._id)}
-              />
-            ))}
-          </div>
-        </Fragment>
+        <div className={classes.container}>
+          {pendingRequestList.map((request) => (
+            <PendingRequestItem
+              key={request._id}
+              ownerName={request.owner.name}
+              description={request.description}
+              explanation={request.explanation}
+              createdAt={request.createdAt.slice(0, 10)}
+              onApprove={approveRequestHandler.bind(
+                null,
+                request._id,
+                request.owner.name
+              )}
+              onReject={rejectRequestHandler.bind(
+                null,
+                request._id,
+                request.owner.name
+              )}
+            />
+          ))}
+        </div>
+      )}
+      {modalIsShown && (
+        <ChangeStateModal
+          ownerName={currentRequestOwner}
+          onClose={hideModalHandler}
+          selectedState={selectedState}
+          approveRequest={approvedStateRequest}
+          rejectRequest={rejectedStateRequest}
+          detailsInputRef={detailsInputRef}
+        />
       )}
     </section>
   );
