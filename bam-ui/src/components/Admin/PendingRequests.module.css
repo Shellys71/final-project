@@ -17,3 +17,8 @@ h1 {
   justify-content: center;
   flex-wrap: wrap;
 }
+
+.error {
+    text-align: center;
+    font-weight: bold;
+}

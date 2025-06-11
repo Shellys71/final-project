@@ -23,6 +23,7 @@ const RequestsList = () => {
   const [selectedState, setSelectedState] = useState("");
   const [currentRequestId, setCurrentRequestId] = useState("");
   const [currentRequestOwner, setCurrentRequestOwner] = useState("");
+  const [showNotExistingError, setShowNotExistingError] = useState(false);
 
   const detailsInputRef = useRef();
 
@@ -110,13 +111,20 @@ const RequestsList = () => {
 
   const sortByCategoryHandler = (category) => {
     const sortedPendingList = pendingRequestList.filter((request) => {
+        setShowNotExistingError(false);
         return request.description === category;
     });
+    if (sortedPendingList.length === 0 && category !== "") {
+        setShowNotExistingError(true);
+    }
     setSortedPendingRequestList(sortedPendingList);
   };
 
   const sortedListExists = sortedPendingRequestList.length > 0;
-  const currentPendingList = sortedListExists ? sortedPendingRequestList : pendingRequestList;
+  const currentPendingList = sortedListExists
+    ? sortedPendingRequestList
+    : pendingRequestList;
+  const notExistingError = <p className={classes.error}>אין בקשות פתוחות מסוג זה</p>;
 
   return (
     <section className={classes.section}>
@@ -126,9 +134,8 @@ const RequestsList = () => {
         <LoadingSpinner />
       ) : (
         <Fragment>
-          <CategorySelection
-            onCategoryChange={sortByCategoryHandler}
-          />
+          <CategorySelection onCategoryChange={sortByCategoryHandler} />
+          {showNotExistingError && notExistingError}
           <div className={classes.container}>
             {currentPendingList.map((request) => (
               <PendingRequestItem
