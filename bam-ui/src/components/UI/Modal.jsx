@@ -20,14 +20,18 @@ const portalElemnt = document.getElementById("overlays");
 const Modal = (props) => {
   return (
     <Fragment>
-      {ReactDOM.createPortal(
-        <Backdrop onClose={props.onClose} />,
-        portalElemnt
-      )}
-      {ReactDOM.createPortal(
-        <ModalOverlay>{props.children}</ModalOverlay>,
-        portalElemnt
-      )}
+      {portalElemnt ? (
+        <div>
+          {ReactDOM.createPortal(
+            <Backdrop onClose={props.onClose} />,
+            portalElemnt
+          )}
+          {ReactDOM.createPortal(
+            <ModalOverlay>{props.children}</ModalOverlay>,
+            portalElemnt
+          )}
+        </div>
+      ) : <p className={classes.error}>אופס, קרתה שגיאה! חזרו על הפעולה מאוחר יותר...</p>}
     </Fragment>
   );
 };
