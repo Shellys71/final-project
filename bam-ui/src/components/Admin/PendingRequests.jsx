@@ -1,4 +1,10 @@
-import React, { useEffect, useState, useContext, useRef } from "react";
+import React, {
+  useEffect,
+  useState,
+  useContext,
+  useRef,
+  Fragment,
+} from "react";
 
 import classes from "./PendingRequests.module.css";
 import AuthContext from "../../store/auth-context";
@@ -6,11 +12,13 @@ import useHttp from "../../hooks/use-http";
 import LoadingSpinner from "../UI/LoadingSpinner";
 import PendingRequestItem from "./PendingRequestItem";
 import ChangeStateModal from "./ChangeStateModal";
+import CategorySelection from "./CategorySelection";
 
 const RequestsList = () => {
   const PENDING_REQUEST = "pending";
 
   const [pendingRequestList, setPendingRequestList] = useState([]);
+  const [sortedPendingRequestList, setSortedPendingRequestList] = useState([]);
   const [modalIsShown, setModalIsShown] = useState(false);
   const [selectedState, setSelectedState] = useState("");
   const [currentRequestId, setCurrentRequestId] = useState("");
@@ -100,6 +108,16 @@ const RequestsList = () => {
     setSelectedState("reject");
   };
 
+  const sortByCategoryHandler = (category) => {
+    const sortedPendingList = pendingRequestList.filter((request) => {
+        return request.description === category;
+    });
+    setSortedPendingRequestList(sortedPendingList);
+  };
+
+  const sortedListExists = sortedPendingRequestList.length > 0;
+  const currentPendingList = sortedListExists ? sortedPendingRequestList : pendingRequestList;
+
   return (
     <section className={classes.section}>
       <h1>בקשות פתוחות</h1>
@@ -107,27 +125,32 @@ const RequestsList = () => {
       {isLoading ? (
         <LoadingSpinner />
       ) : (
-        <div className={classes.container}>
-          {pendingRequestList.map((request) => (
-            <PendingRequestItem
-              key={request._id}
-              ownerName={request.owner.name}
-              description={request.description}
-              explanation={request.explanation}
-              createdAt={request.createdAt.slice(0, 10)}
-              onApprove={approveRequestHandler.bind(
-                null,
-                request._id,
-                request.owner.name
-              )}
-              onReject={rejectRequestHandler.bind(
-                null,
-                request._id,
-                request.owner.name
-              )}
-            />
-          ))}
-        </div>
+        <Fragment>
+          <CategorySelection
+            onCategoryChange={sortByCategoryHandler}
+          />
+          <div className={classes.container}>
+            {currentPendingList.map((request) => (
+              <PendingRequestItem
+                key={request._id}
+                ownerName={request.owner.name}
+                description={request.description}
+                explanation={request.explanation}
+                createdAt={request.createdAt.slice(0, 10)}
+                onApprove={approveRequestHandler.bind(
+                  null,
+                  request._id,
+                  request.owner.name
+                )}
+                onReject={rejectRequestHandler.bind(
+                  null,
+                  request._id,
+                  request.owner.name
+                )}
+              />
+            ))}
+          </div>
+        </Fragment>
       )}
       {modalIsShown && (
         <ChangeStateModal
