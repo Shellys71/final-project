@@ -60,17 +60,22 @@ const RequestsList = () => {
         <Fragment>
           <h2 className={classes.title}>בקשות פתוחות</h2>
           <div className={classes.container}>
-            {pendingRequestList.map((request) => (
+            {pendingRequestList.length !== 0 ? (
+              pendingRequestList.map((request) => (
                 <div className={classes.request} key={request._id}>
                   {request.description}
                   <br />
                   <p>{request.explanation}</p>
                 </div>
-              ))}
+              ))
+            ) : (
+              <p>אין בקשות פתוחות כרגע</p>
+            )}
           </div>
           <h2 className={classes.title}>בקשות סגורות</h2>
           <div className={classes.container}>
-            {closedRequestList.map((request) => (
+            {closedRequestList.length !== 0 ? (
+              closedRequestList.map((request) => (
                 <div className={classes.request} key={request._id}>
                   {request.status.state === APPROVED_REQUEST ? (
                     <p className={classes.approved}>אושרה</p>
@@ -85,7 +90,10 @@ const RequestsList = () => {
                   <br />
                   <p>{request.explanation}</p>
                 </div>
-              ))}
+              ))
+            ) : (
+              <p>אין בקשות סגורות כרגע</p>
+            )}
           </div>
           {error && <p>{error}</p>}
         </Fragment>

@@ -15,8 +15,6 @@ import ChangeStateModal from "./ChangeStateModal";
 import CategorySelection from "./CategorySelection";
 
 const RequestsList = () => {
-  const PENDING_REQUEST = "pending";
-
   const [pendingRequestList, setPendingRequestList] = useState([]);
   const [sortedPendingRequestList, setSortedPendingRequestList] = useState([]);
   const [modalIsShown, setModalIsShown] = useState(false);
@@ -106,11 +104,11 @@ const RequestsList = () => {
 
   const sortByCategoryHandler = (category) => {
     const sortedPendingList = pendingRequestList.filter((request) => {
-        setShowNotExistingError(false);
-        return request.description === category;
+      setShowNotExistingError(false);
+      return request.description === category;
     });
     if (sortedPendingList.length === 0 && category !== "") {
-        setShowNotExistingError(true);
+      setShowNotExistingError(true);
     }
     setSortedPendingRequestList(sortedPendingList);
   };
@@ -119,7 +117,9 @@ const RequestsList = () => {
   const currentPendingList = sortedListExists
     ? sortedPendingRequestList
     : pendingRequestList;
-  const notExistingError = <p className={classes.error}>אין בקשות פתוחות מסוג זה</p>;
+  const notExistingError = (
+    <p className={classes.error}>אין בקשות פתוחות מסוג זה</p>
+  );
 
   return (
     <section className={classes.section}>
@@ -132,25 +132,29 @@ const RequestsList = () => {
           <CategorySelection onCategoryChange={sortByCategoryHandler} />
           {showNotExistingError && notExistingError}
           <div className={classes.container}>
-            {currentPendingList.map((request) => (
-              <PendingRequestItem
-                key={request._id}
-                ownerName={request.owner.name}
-                description={request.description}
-                explanation={request.explanation}
-                createdAt={request.createdAt.slice(0, 10)}
-                onApprove={approveRequestHandler.bind(
-                  null,
-                  request._id,
-                  request.owner.name
-                )}
-                onReject={rejectRequestHandler.bind(
-                  null,
-                  request._id,
-                  request.owner.name
-                )}
-              />
-            ))}
+            {currentPendingList.length !== 0 ? (
+              currentPendingList.map((request) => (
+                <PendingRequestItem
+                  key={request._id}
+                  ownerName={request.owner.name}
+                  description={request.description}
+                  explanation={request.explanation}
+                  createdAt={request.createdAt.slice(0, 10)}
+                  onApprove={approveRequestHandler.bind(
+                    null,
+                    request._id,
+                    request.owner.name
+                  )}
+                  onReject={rejectRequestHandler.bind(
+                    null,
+                    request._id,
+                    request.owner.name
+                  )}
+                />
+              ))
+            ) : (
+              <p>אין בקשות פתוחות כרגע</p>
+            )}
           </div>
         </Fragment>
       )}

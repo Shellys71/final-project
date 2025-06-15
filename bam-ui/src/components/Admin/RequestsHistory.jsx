@@ -48,13 +48,17 @@ const RequestsHistory = () => {
             requestsLimit={requestsLimit}
           />
           <div className={classes.container}>
-            {requestList.map((request) => (
-              <div className={classes.request} key={request._id}>
-                {request.description}
-                <br />
-                <p>{request.explanation}</p>
-              </div>
-            ))}
+            {requestList.length !== 0 ? (
+              requestList.map((request) => (
+                <div className={classes.request} key={request._id}>
+                  {request.description}
+                  <br />
+                  <p>{request.explanation}</p>
+                </div>
+              ))
+            ) : (
+              <p>אין בקשות כרגע</p>
+            )}
           </div>
           <LoadMoreRequests
             currentLimit={requestsLimit}
