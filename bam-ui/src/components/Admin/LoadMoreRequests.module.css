@@ -1,0 +1,20 @@
+.content {
+  display: flex;
+  justify-content: center;
+}
+
+.content button {
+  cursor: pointer;
+  font: inherit;
+  color: white;
+  background-color: #003b7a;
+  border: 1px solid #003b7a;
+  border-radius: 4px;
+  padding: 0.4rem 1rem;
+  margin: 0.5rem;
+}
+
+.content button:hover {
+  background-color: #0158b5;
+  border-color: #0158b5;
+}
