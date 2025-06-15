@@ -31,20 +31,15 @@ const RequestsList = () => {
 
   const authCtx = useContext(AuthContext);
 
-  const setPendingRequestsHandler = (requestsList) => {
-    const pendingRequests = requestsList.filter((request) => {
-      return request.status.state === PENDING_REQUEST;
-    });
-    setPendingRequestList(pendingRequests);
-  };
-
   useEffect(() => {
     sendUserRequest(
       {
-        url: "http://localhost:5000/requests",
+        url: "http://localhost:5000/requests?state=pending",
         headers: { Authorization: authCtx.token },
       },
-      setPendingRequestsHandler
+      (data) => {
+        setPendingRequestList(data);
+      }
     );
   }, [sendUserRequest, authCtx.token]);
 
