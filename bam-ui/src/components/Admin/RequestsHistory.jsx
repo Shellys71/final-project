@@ -16,7 +16,7 @@ const RequestsHistory = () => {
   useEffect(() => {
     sendUserRequest(
       {
-        url: "http://localhost:5000/requests",
+        url: "http://localhost:5000/requests?limit=5",
         headers: { Authorization: authCtx.token },
       },
       (data) => {

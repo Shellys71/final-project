@@ -1,13 +1,10 @@
-import React, { useState, useRef, useContext } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useRef, useContext } from "react";
 
 import classes from "./RequestsForm.module.css";
 import AuthContext from "../../store/auth-context";
 import useHttp from "../../hooks/use-http";
 
 const RequestsForm = () => {
-  const navigate = useNavigate();
-
   const authCtx = useContext(AuthContext);
 
   const { isLoading, error, sendRequest: sendUserRequest } = useHttp();

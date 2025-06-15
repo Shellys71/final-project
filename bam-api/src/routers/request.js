@@ -53,7 +53,7 @@ router.get("/requests", auth, async (req, res) => {
 
   try {
     const sortedRequests = await Request.find(match, null, {
-      limit: 50,
+      limit: parseInt(req.query.limit),
       skip: parseInt(req.query.skip),
     }).populate("owner");
     res.send(sortedRequests);
