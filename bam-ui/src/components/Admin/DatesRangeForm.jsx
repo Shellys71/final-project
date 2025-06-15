@@ -7,7 +7,7 @@ import useHttp from "../../hooks/use-http";
 
 const DatesRangeForm = (props) => {
   const [fromDate, setFromDate] = useState("");
-  const [untilDate, setUntilDate] = useState([]);
+  const [untilDate, setUntilDate] = useState("");
 
   const { isLoading, error, sendRequest: sendUserRequest } = useHttp();
 
@@ -15,9 +15,16 @@ const DatesRangeForm = (props) => {
 
   const submitRangeHandler = (event) => {
     event.preventDefault();
+    let url;
+    const requestsLimit = props.requestsLimit;
+    if (requestsLimit) {
+      url = `http://localhost:5000/requests?limit=${requestsLimit}&from=${fromDate}&until=${untilDate}`;
+    } else {
+      url = `http://localhost:5000/requests?limit=5&from=${fromDate}&until=${untilDate}`;
+    }
     sendUserRequest(
       {
-        url: `http://localhost:5000/requests?from=${fromDate}&until=${untilDate}`,
+        url,
         headers: { Authorization: authCtx.token },
       },
       (data) => {

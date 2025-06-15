@@ -5,9 +5,13 @@ import AuthContext from "../../store/auth-context";
 import useHttp from "../../hooks/use-http";
 import LoadingSpinner from "../UI/LoadingSpinner";
 import DatesRangeForm from "./DatesRangeForm";
+import LoadMoreRequests from "./LoadMoreRequests";
 
 const RequestsHistory = () => {
+  const RANGE = 5;
+
   const [requestList, setRequestList] = useState([]);
+  const [requestsLimit, setRequestsLimit] = useState(RANGE);
 
   const { isLoading, error, sendRequest: sendUserRequest } = useHttp();
 
@@ -16,14 +20,18 @@ const RequestsHistory = () => {
   useEffect(() => {
     sendUserRequest(
       {
-        url: "http://localhost:5000/requests?limit=5",
+        url: `http://localhost:5000/requests?limit=${requestsLimit}`,
         headers: { Authorization: authCtx.token },
       },
       (data) => {
         setRequestList(data);
       }
     );
-  }, [authCtx.token, sendUserRequest]);
+  }, [authCtx.token, sendUserRequest, requestsLimit]);
+
+  const changeLimitHandler = (newLimit) => {
+    setRequestsLimit(newLimit);
+  };
 
   return (
     <section className={classes.section}>
@@ -37,6 +45,7 @@ const RequestsHistory = () => {
             onSubmitDatesRange={(data) => {
               setRequestList(data);
             }}
+            requestsLimit={requestsLimit}
           />
           <div className={classes.container}>
             {requestList.map((request) => (
@@ -47,6 +56,10 @@ const RequestsHistory = () => {
               </div>
             ))}
           </div>
+          <LoadMoreRequests
+            currentLimit={requestsLimit}
+            onChangeLimit={changeLimitHandler}
+          />
         </Fragment>
       )}
     </section>
