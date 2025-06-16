@@ -124,7 +124,7 @@ const AuthForm = () => {
   return (
     <section className={classes.auth}>
       {error && <ErrorPage error={error} />}
-      {!error && !isLoading && pageContent}
+      {!error && pageContent}
     </section>
   );
 };

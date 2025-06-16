@@ -78,7 +78,7 @@ const RequestsForm = () => {
   return (
     <section className={classes.content}>
       {error && <ErrorPage error={error} />}
-      {!error && !isLoading && pageContent}
+      {!error && pageContent}
     </section>
   );
 };
