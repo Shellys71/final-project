@@ -37,12 +37,3 @@ h1 {
   font-size: 1rem;
   margin: 1vh;
 }
-
-.error {
-  text-align: center;
-  font-weight: bold;
-  background-color: rgba(226, 143, 143, 0.562);
-  max-width: fit-content;
-  padding: 1vh;
-  border-radius: 5px;
-}

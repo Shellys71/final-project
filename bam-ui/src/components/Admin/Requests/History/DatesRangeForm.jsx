@@ -4,6 +4,7 @@ import LoadingSpinner from "../../../UI/LoadingSpinner";
 import classes from "./DatesRangeForm.module.css";
 import AuthContext from "../../../../store/auth-context";
 import useHttp from "../../../../hooks/use-http";
+import ErrorPage from "../../../../pages/ErrorPage";
 
 const DatesRangeForm = (props) => {
   const [fromDate, setFromDate] = useState("");
@@ -14,7 +15,7 @@ const DatesRangeForm = (props) => {
   const authCtx = useContext(AuthContext);
 
   useEffect(() => {
-    if (untilDate !== "") {
+    if (untilDate !== "" && fromDate !== "") {
       submitRangeHandler(fromDate, untilDate);
     }
   }, [fromDate, untilDate]);
@@ -38,33 +39,34 @@ const DatesRangeForm = (props) => {
     );
   };
 
+  const pageContent = (
+    <form className={classes.form}>
+      <label htmlFor="from">מהתאריך: </label>
+      <input
+        type="date"
+        id="from"
+        value={fromDate}
+        onChange={(event) => {
+          setFromDate(event.target.value);
+        }}
+      />
+      <label htmlFor="until">עד התאריך: </label>
+      <input
+        type="date"
+        id="until"
+        value={untilDate}
+        onChange={(event) => {
+          setUntilDate(event.target.value);
+        }}
+      />
+    </form>
+  );
+
   return (
     <Fragment>
-      {error && <p className={classes.error}>{error}</p>}
-      {isLoading ? (
-        <LoadingSpinner />
-      ) : (
-        <form className={classes.form}>
-          <label htmlFor="from">מהתאריך: </label>
-          <input
-            type="date"
-            id="from"
-            value={fromDate}
-            onChange={(event) => {
-              setFromDate(event.target.value);
-            }}
-          />
-          <label htmlFor="until">עד התאריך: </label>
-          <input
-            type="date"
-            id="until"
-            value={untilDate}
-            onChange={(event) => {
-              setUntilDate(event.target.value);
-            }}
-          />
-        </form>
-      )}
+      {error && <ErrorPage error={error} />}
+      {isLoading && <LoadingSpinner />}
+      {!error && !isLoading && pageContent}
     </Fragment>
   );
 };

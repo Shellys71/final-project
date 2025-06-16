@@ -22,11 +22,3 @@ h1 {
   flex-wrap: wrap;
 }
 
-.error {
-  text-align: center;
-  font-weight: bold;
-  background-color: rgba(226, 143, 143, 0.562);
-  max-width: fit-content;
-  padding: 1vh;
-  border-radius: 5px;
-}

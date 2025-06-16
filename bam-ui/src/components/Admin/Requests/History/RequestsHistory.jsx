@@ -6,6 +6,7 @@ import useHttp from "../../../../hooks/use-http";
 import LoadingSpinner from "../../../UI/LoadingSpinner";
 import DatesRangeForm from "./DatesRangeForm";
 import LoadMoreRequests from "./LoadMoreRequests";
+import ErrorPage from "../../../../pages/ErrorPage";
 
 const RequestsHistory = () => {
   const RANGE = 5;
@@ -33,39 +34,40 @@ const RequestsHistory = () => {
     setRequestsLimit(newLimit);
   };
 
+  const pageContent = (
+    <Fragment>
+      <h1>היסטוריית בקשות</h1>
+      <DatesRangeForm
+        onSubmitDatesRange={(data) => {
+          setRequestList(data);
+        }}
+        requestsLimit={requestsLimit}
+      />
+      <div className={classes.container}>
+        {requestList.length !== 0 ? (
+          requestList.map((request) => (
+            <div className={classes.request} key={request._id}>
+              {request.description}
+              <br />
+              <p>{request.explanation}</p>
+            </div>
+          ))
+        ) : (
+          <p>אין בקשות כרגע</p>
+        )}
+      </div>
+      <LoadMoreRequests
+        currentLimit={requestsLimit}
+        onChangeLimit={changeLimitHandler}
+      />
+    </Fragment>
+  );
+
   return (
     <section className={classes.section}>
-      <h1>היסטוריית בקשות</h1>
-      {error && <p className={classes.error}>{error}</p>}
-      {isLoading ? (
-        <LoadingSpinner />
-      ) : (
-        <Fragment>
-          <DatesRangeForm
-            onSubmitDatesRange={(data) => {
-              setRequestList(data);
-            }}
-            requestsLimit={requestsLimit}
-          />
-          <div className={classes.container}>
-            {requestList.length !== 0 ? (
-              requestList.map((request) => (
-                <div className={classes.request} key={request._id}>
-                  {request.description}
-                  <br />
-                  <p>{request.explanation}</p>
-                </div>
-              ))
-            ) : (
-              <p>אין בקשות כרגע</p>
-            )}
-          </div>
-          <LoadMoreRequests
-            currentLimit={requestsLimit}
-            onChangeLimit={changeLimitHandler}
-          />
-        </Fragment>
-      )}
+      {error && <ErrorPage error={error} />}
+      {isLoading && <LoadingSpinner />}
+      {!error && !isLoading && pageContent}
     </section>
   );
 };

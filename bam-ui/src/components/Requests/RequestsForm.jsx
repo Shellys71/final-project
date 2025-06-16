@@ -1,8 +1,9 @@
-import React, { useRef, useContext } from "react";
+import React, { useRef, useContext, Fragment } from "react";
 
 import classes from "./RequestsForm.module.css";
 import AuthContext from "../../store/auth-context";
 import useHttp from "../../hooks/use-http";
+import ErrorPage from "../../pages/ErrorPage";
 
 const RequestsForm = () => {
   const authCtx = useContext(AuthContext);
@@ -43,11 +44,10 @@ const RequestsForm = () => {
     );
   };
 
-  return (
-    <section className={classes.content}>
+  const pageContent = (
+    <Fragment>
       <h1>בקשה חדשה</h1>
       <form onSubmit={submitHandler}>
-        {error && <p className={classes.error}>{error}</p>}
         <div className={classes.control}>
           <label htmlFor="description">סוג הבקשה</label>
           <select id="description" required ref={descriptionInputRef}>
@@ -72,6 +72,13 @@ const RequestsForm = () => {
           <button type="button" className={classes.toggle}></button>
         </div>
       </form>
+    </Fragment>
+  );
+
+  return (
+    <section className={classes.content}>
+      {error && <ErrorPage error={error} />}
+      {!error && !isLoading && pageContent}
     </section>
   );
 };

@@ -8,7 +8,7 @@ const Error = (props) => {
     <Fragment>
       <p>אופס! משהו השתבש...</p>
       <p className={classes.code}>שגיאה {props.error.code}</p>
-      <img src={errorPigImage} alt="error pig image" />
+      <img src={errorPigImage} alt="errorPig" />
     </Fragment>
   );
 };

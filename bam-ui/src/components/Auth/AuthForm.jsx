@@ -1,9 +1,10 @@
-import React, { useState, useRef, useContext } from "react";
+import React, { useState, useRef, useContext, Fragment } from "react";
 import { useNavigate } from "react-router-dom";
 
 import classes from "./AuthForm.module.css";
 import AuthContext from "../../store/auth-context";
 import useHttp from "../../hooks/use-http";
+import ErrorPage from "../../pages/ErrorPage";
 
 const AuthForm = () => {
   const navigate = useNavigate();
@@ -70,8 +71,8 @@ const AuthForm = () => {
     );
   };
 
-  return (
-    <section className={classes.auth}>
+  const pageContent = (
+    <Fragment>
       <h1>{isLogin ? "התחברות" : "הרשמה"}</h1>
       <form onSubmit={submitHandler}>
         {error && <p className={classes.error}>{error}</p>}
@@ -117,6 +118,13 @@ const AuthForm = () => {
           </button>
         </div>
       </form>
+    </Fragment>
+  );
+
+  return (
+    <section className={classes.auth}>
+      {error && <ErrorPage error={error} />}
+      {!error && !isLoading && pageContent}
     </section>
   );
 };

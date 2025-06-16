@@ -13,6 +13,7 @@ import LoadingSpinner from "../../../UI/LoadingSpinner";
 import PendingRequestItem from "./PendingRequestItem";
 import ChangeStateModal from "./Modals/ChangeStateModal";
 import CategorySelection from "./CategorySelection";
+import ErrorPage from "../../../../pages/ErrorPage";
 
 const RequestsList = () => {
   const [pendingRequestList, setPendingRequestList] = useState([]);
@@ -121,43 +122,44 @@ const RequestsList = () => {
     <p className={classes.error}>אין בקשות פתוחות מסוג זה</p>
   );
 
+  const pageContent = (
+    <Fragment>
+      <h1>בקשות פתוחות</h1>
+      <CategorySelection onCategoryChange={sortByCategoryHandler} />
+      {showNotExistingError && notExistingError}
+      <div className={classes.container}>
+        {currentPendingList.length !== 0 ? (
+          currentPendingList.map((request) => (
+            <PendingRequestItem
+              key={request._id}
+              ownerName={request.owner.name}
+              description={request.description}
+              explanation={request.explanation}
+              createdAt={request.createdAt.slice(0, 10)}
+              onApprove={approveRequestHandler.bind(
+                null,
+                request._id,
+                request.owner.name
+              )}
+              onReject={rejectRequestHandler.bind(
+                null,
+                request._id,
+                request.owner.name
+              )}
+            />
+          ))
+        ) : (
+          <p>אין בקשות פתוחות כרגע</p>
+        )}
+      </div>
+    </Fragment>
+  );
+
   return (
     <section className={classes.section}>
-      <h1>בקשות פתוחות</h1>
-      {error && <p className={classes.error}>{error}</p>}
-      {isLoading ? (
-        <LoadingSpinner />
-      ) : (
-        <Fragment>
-          <CategorySelection onCategoryChange={sortByCategoryHandler} />
-          {showNotExistingError && notExistingError}
-          <div className={classes.container}>
-            {currentPendingList.length !== 0 ? (
-              currentPendingList.map((request) => (
-                <PendingRequestItem
-                  key={request._id}
-                  ownerName={request.owner.name}
-                  description={request.description}
-                  explanation={request.explanation}
-                  createdAt={request.createdAt.slice(0, 10)}
-                  onApprove={approveRequestHandler.bind(
-                    null,
-                    request._id,
-                    request.owner.name
-                  )}
-                  onReject={rejectRequestHandler.bind(
-                    null,
-                    request._id,
-                    request.owner.name
-                  )}
-                />
-              ))
-            ) : (
-              <p>אין בקשות פתוחות כרגע</p>
-            )}
-          </div>
-        </Fragment>
-      )}
+      {error && <ErrorPage error={error} />}
+      {isLoading && <LoadingSpinner />}
+      {!error && !isLoading && pageContent}
       {modalIsShown && (
         <ChangeStateModal
           ownerName={currentRequestOwner}
