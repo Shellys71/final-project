@@ -22,10 +22,6 @@
   padding: 2vh;
 }
 
-.request:hover {
-  background-color: #e2f2ff;
-}
-
 .request p {
   font-size: 1rem;
   margin: 1vh;
