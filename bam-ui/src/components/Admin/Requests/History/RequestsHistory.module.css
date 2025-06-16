@@ -26,6 +26,7 @@ h1 {
   border-radius: 10px;
   padding: 2vh;
   cursor: pointer;
+  background-color: #f5faff;
 }
 
 .request p {

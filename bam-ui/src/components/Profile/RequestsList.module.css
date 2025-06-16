@@ -1,5 +1,5 @@
 .section {
-    overflow-x: hidden;
+  overflow-x: hidden;
 }
 
 .title {
@@ -20,6 +20,7 @@
   border: 0.1vh solid #003b7a;
   border-radius: 10px;
   padding: 2vh;
+  background-color: #f5faff;
 }
 
 .request p {
@@ -28,11 +29,11 @@
 }
 
 .approved {
-    color: #007000;
-    font-weight: bold;
+  color: #007000;
+  font-weight: bold;
 }
 
 .rejected {
-    color: #930303;
-    font-weight: bold;
+  color: #930303;
+  font-weight: bold;
 }
