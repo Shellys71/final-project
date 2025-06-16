@@ -15,7 +15,7 @@ const useHttp = () => {
       });
 
       if (!response.ok) {
-        throw new Error("הבקשה נכשלה!");
+        throw new Error(`הבקשה נכשלה ${response.status}: ${response.statusText}`);
       }
 
       const data = await response.json();
