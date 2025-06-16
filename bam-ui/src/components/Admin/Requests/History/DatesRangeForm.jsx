@@ -1,4 +1,4 @@
-import React, { Fragment, useState, useContext } from "react";
+import React, { Fragment, useState, useContext, useEffect } from "react";
 
 import LoadingSpinner from "../../../UI/LoadingSpinner";
 import classes from "./DatesRangeForm.module.css";
@@ -13,14 +13,19 @@ const DatesRangeForm = (props) => {
 
   const authCtx = useContext(AuthContext);
 
-  const submitRangeHandler = (event) => {
-    event.preventDefault();
+  useEffect(() => {
+    if (untilDate !== "") {
+      submitRangeHandler(fromDate, untilDate);
+    }
+  }, [fromDate, untilDate]);
+
+  const submitRangeHandler = (currentFromDate, currentUntilDate) => {
     let url;
     const requestsLimit = props.requestsLimit;
     if (requestsLimit) {
-      url = `http://localhost:5000/requests?limit=${requestsLimit}&from=${fromDate}&until=${untilDate}`;
+      url = `http://localhost:5000/requests?limit=${requestsLimit}&from=${currentFromDate}&until=${currentUntilDate}`;
     } else {
-      url = `http://localhost:5000/requests?limit=5&from=${fromDate}&until=${untilDate}`;
+      url = `http://localhost:5000/requests?limit=5&from=${currentFromDate}&until=${currentUntilDate}`;
     }
     sendUserRequest(
       {
@@ -39,10 +44,7 @@ const DatesRangeForm = (props) => {
       {isLoading ? (
         <LoadingSpinner />
       ) : (
-        <form
-          className={classes.form}
-          onSubmit={submitRangeHandler}
-        >
+        <form className={classes.form}>
           <label htmlFor="from">מהתאריך: </label>
           <input
             type="date"
@@ -61,7 +63,6 @@ const DatesRangeForm = (props) => {
               setUntilDate(event.target.value);
             }}
           />
-          <button type="submit">סנן</button>
         </form>
       )}
     </Fragment>
