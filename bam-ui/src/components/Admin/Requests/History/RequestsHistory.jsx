@@ -1,9 +1,9 @@
 import { useEffect, useState, useContext, Fragment } from "react";
 
 import classes from "./RequestsHistory.module.css";
-import AuthContext from "../../store/auth-context";
-import useHttp from "../../hooks/use-http";
-import LoadingSpinner from "../UI/LoadingSpinner";
+import AuthContext from "../../../../store/auth-context";
+import useHttp from "../../../../hooks/use-http";
+import LoadingSpinner from "../../../UI/LoadingSpinner";
 import DatesRangeForm from "./DatesRangeForm";
 import LoadMoreRequests from "./LoadMoreRequests";
 

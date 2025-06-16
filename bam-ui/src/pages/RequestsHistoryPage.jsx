@@ -1,6 +1,6 @@
 import React from "react";
 
-import RequestsHistory from "../components/Admin/RequestsHistory";
+import RequestsHistory from "../components/Admin/Requests/History/RequestsHistory";
 
 const RequestsHistoryPage = () => {
   return <RequestsHistory />;

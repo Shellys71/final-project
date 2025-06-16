@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 
-import Modal from "../UI/Modal";
+import Modal from "../../UI/Modal";
 import classes from "./ChangeStateModal.module.css";
 
 const ChangeStateModal = (props) => {

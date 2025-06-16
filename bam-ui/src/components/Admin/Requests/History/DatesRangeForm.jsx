@@ -1,9 +1,9 @@
 import React, { Fragment, useState, useContext } from "react";
 
-import LoadingSpinner from "../UI/LoadingSpinner";
+import LoadingSpinner from "../../../UI/LoadingSpinner";
 import classes from "./DatesRangeForm.module.css";
-import AuthContext from "../../store/auth-context";
-import useHttp from "../../hooks/use-http";
+import AuthContext from "../../../../store/auth-context";
+import useHttp from "../../../../hooks/use-http";
 
 const DatesRangeForm = (props) => {
   const [fromDate, setFromDate] = useState("");

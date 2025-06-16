@@ -1,4 +1,4 @@
-import PendingRequests from "../components/Admin/PendingRequests";
+import PendingRequests from "../components/Admin/Requests/Pending/PendingRequests";
 
 const PendingRequestsPage = () => {
   return <PendingRequests />;

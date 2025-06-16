@@ -7,11 +7,11 @@ import React, {
 } from "react";
 
 import classes from "./PendingRequests.module.css";
-import AuthContext from "../../store/auth-context";
-import useHttp from "../../hooks/use-http";
-import LoadingSpinner from "../UI/LoadingSpinner";
+import AuthContext from "../../../../store/auth-context";
+import useHttp from "../../../../hooks/use-http";
+import LoadingSpinner from "../../../UI/LoadingSpinner";
 import PendingRequestItem from "./PendingRequestItem";
-import ChangeStateModal from "./ChangeStateModal";
+import ChangeStateModal from "../../Modals/ChangeStateModal";
 import CategorySelection from "./CategorySelection";
 
 const RequestsList = () => {
