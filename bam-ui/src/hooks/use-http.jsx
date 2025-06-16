@@ -7,21 +7,20 @@ const useHttp = () => {
   const sendRequest = useCallback(async (requestConfig, applyData) => {
     setIsLoading(true);
     setError(null);
-    try {
-      const response = await fetch(requestConfig.url, {
-        method: requestConfig.method ? requestConfig.method : "GET",
-        headers: requestConfig.headers ? requestConfig.headers : {},
-        body: requestConfig.body ? JSON.stringify(requestConfig.body) : null,
+    const response = await fetch(requestConfig.url, {
+      method: requestConfig.method ? requestConfig.method : "GET",
+      headers: requestConfig.headers ? requestConfig.headers : {},
+      body: requestConfig.body ? JSON.stringify(requestConfig.body) : null,
+    });
+
+    if (!response.ok) {
+      setError({
+        code: response.status,
+        info: response.statusText,
       });
-
-      if (!response.ok) {
-        throw new Error(`הבקשה נכשלה ${response.status}: ${response.statusText}`);
-      }
-
+    } else {
       const data = await response.json();
       applyData(data);
-    } catch (err) {
-      setError(err.message || "משהו השתבש!");
     }
     setIsLoading(false);
   }, []);
