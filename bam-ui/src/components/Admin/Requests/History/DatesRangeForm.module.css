@@ -1,5 +1,6 @@
 .form {
   text-align: center;
+  margin: 2vh;
 }
 
 .form input {
@@ -21,4 +22,13 @@
 .form button:hover {
   background-color: #0158b5;
   border-color: #0158b5;
+}
+
+.error {
+  text-align: center;
+  font-weight: bold;
+  background-color: rgba(226, 143, 143, 0.562);
+  max-width: fit-content;
+  padding: 1vh;
+  border-radius: 5px;
 }

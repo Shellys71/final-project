@@ -40,7 +40,7 @@ const DatesRangeForm = (props) => {
 
   return (
     <Fragment>
-      {error && <p>הבקשה נכשלה...</p>}
+      {error && <p className={classes.error}>{error}</p>}
       {isLoading ? (
         <LoadingSpinner />
       ) : (

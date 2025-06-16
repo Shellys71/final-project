@@ -58,6 +58,7 @@ const RequestsList = () => {
         <LoadingSpinner />
       ) : (
         <Fragment>
+          {error && <p className={classes.error}>{error}</p>}
           <h2 className={classes.title}>בקשות פתוחות</h2>
           <div className={classes.container}>
             {pendingRequestList.length !== 0 ? (
@@ -95,7 +96,6 @@ const RequestsList = () => {
               <p>אין בקשות סגורות כרגע</p>
             )}
           </div>
-          {error && <p>{error}</p>}
         </Fragment>
       )}
     </section>

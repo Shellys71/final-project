@@ -36,7 +36,7 @@ const RequestsHistory = () => {
   return (
     <section className={classes.section}>
       <h1>היסטוריית בקשות</h1>
-      {error && <p>{error}</p>}
+      {error && <p className={classes.error}>{error}</p>}
       {isLoading ? (
         <LoadingSpinner />
       ) : (

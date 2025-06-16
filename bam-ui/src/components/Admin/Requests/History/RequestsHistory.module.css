@@ -1,5 +1,9 @@
 .section {
   overflow-x: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 
 h1 {
@@ -32,4 +36,13 @@ h1 {
 .request p {
   font-size: 1rem;
   margin: 1vh;
+}
+
+.error {
+  text-align: center;
+  font-weight: bold;
+  background-color: rgba(226, 143, 143, 0.562);
+  max-width: fit-content;
+  padding: 1vh;
+  border-radius: 5px;
 }

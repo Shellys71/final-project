@@ -74,6 +74,7 @@ const AuthForm = () => {
     <section className={classes.auth}>
       <h1>{isLogin ? "התחברות" : "הרשמה"}</h1>
       <form onSubmit={submitHandler}>
+        {error && <p className={classes.error}>{error}</p>}
         {!isLogin && (
           <div className={classes.control}>
             <label htmlFor="name">שם מלא</label>
@@ -115,7 +116,6 @@ const AuthForm = () => {
             {isLogin ? "צור חשבון חדש" : "התחבר עם חשבון קיים"}
           </button>
         </div>
-        {error && <p>{error}</p>}
       </form>
     </section>
   );

@@ -47,6 +47,7 @@ const RequestsForm = () => {
     <section className={classes.content}>
       <h1>בקשה חדשה</h1>
       <form onSubmit={submitHandler}>
+        {error && <p className={classes.error}>{error}</p>}
         <div className={classes.control}>
           <label htmlFor="description">סוג הבקשה</label>
           <select id="description" required ref={descriptionInputRef}>
@@ -70,7 +71,6 @@ const RequestsForm = () => {
           {isLoading && <p>הבקשה נשלחת...</p>}
           <button type="button" className={classes.toggle}></button>
         </div>
-        {error && <p>{error}</p>}
       </form>
     </section>
   );
