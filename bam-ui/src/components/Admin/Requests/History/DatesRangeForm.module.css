@@ -23,3 +23,9 @@
   background-color: #0158b5;
   border-color: #0158b5;
 }
+
+.error {
+  font-size: 1.3vw;
+  background-color: #f49393a9;
+  padding: 0.5vh 1vw;
+}

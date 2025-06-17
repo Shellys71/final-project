@@ -64,7 +64,7 @@ const DatesRangeForm = (props) => {
 
   return (
     <Fragment>
-      {error && <ErrorPage error={error} />}
+      {error && <p className={classes.error}>משהו השתבש בבחירת התאריכים! נסה שוב מאוחר יותר...</p>}
       {isLoading && <LoadingSpinner />}
       {!error && !isLoading && pageContent}
     </Fragment>
