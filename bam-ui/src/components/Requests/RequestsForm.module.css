@@ -84,3 +84,11 @@
   padding: 1vh;
   border-radius: 5px;
 }
+
+select {
+  font: inherit;
+}
+
+textarea {
+  font: inherit;
+}

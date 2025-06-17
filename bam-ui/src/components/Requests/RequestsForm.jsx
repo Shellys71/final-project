@@ -1,4 +1,4 @@
-import React, { useRef, useContext, Fragment } from "react";
+import React, { useRef, useContext, Fragment, useState } from "react";
 
 import classes from "./RequestsForm.module.css";
 import AuthContext from "../../store/auth-context";
@@ -10,16 +10,18 @@ const RequestsForm = () => {
 
   const { isLoading, error, sendRequest: sendUserRequest } = useHttp();
 
+  const [successMessage, setSuccessMessage] = useState("");
+
   const descriptionInputRef = useRef();
   const explanationInputRef = useRef();
 
   const submitHandler = (event) => {
     event.preventDefault();
-
+    
+    setSuccessMessage("");
     const enteredDescription = descriptionInputRef.current.value;
     const enteredExplanation = explanationInputRef.current.value;
 
-    // optional: Add validation
     const body = {
       description: enteredDescription,
       explanation: enteredExplanation,
@@ -40,6 +42,7 @@ const RequestsForm = () => {
       () => {
         descriptionInputRef.current.value = "";
         explanationInputRef.current.value = "";
+        setSuccessMessage("הבקשה נוצרה בהצלחה!");
       }
     );
   };
@@ -69,6 +72,7 @@ const RequestsForm = () => {
         <div className={classes.actions}>
           {!isLoading && <button>צור בקשה</button>}
           {isLoading && <p>הבקשה נשלחת...</p>}
+          {successMessage !== "" && <p>{successMessage}</p>}
           <button type="button" className={classes.toggle}></button>
         </div>
       </form>
