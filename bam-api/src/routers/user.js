@@ -1,6 +1,7 @@
 const express = require("express");
 const User = require("../models/user");
 const auth = require("../middleware/auth");
+const jwt = require("jsonwebtoken");
 const router = new express.Router();
 
 router.post("/users", async (req, res) => {
@@ -41,13 +42,35 @@ router.post("/users/logout", auth, async (req, res) => {
   }
 });
 
-router.get("/users/me", auth, async (req, res) => {
-  res.send(req.user);
+router.post("/users/forgot-password", async (req, res) => {
+  const { email } = req.body;
+  try {
+    const existingUser = await User.findOne({ email });
+    if (!existingUser) {
+      return res.json({status: "User Not Exists!"});
+    }
+    const secret = process.env.JWT_SECRET + existingUser.password;
+    const token = jwt.sign(
+      { email: existingUser.email, id: existingUser._id },
+      secret,
+      { expiresIn: "5m" }
+    );
+    const link = `${process.env.HOST}/users/reset-password/${existingUser._id}/${token}`;
+    console.log(link);
+  } catch (e) {
+    res.status(404).send();
+  }
 });
 
-router.patch("/users/me", auth, async (req, res) => {
+router.get("/users/reset-password/:id/:token", async (req, res) => {
+  const {id, token} = req.params;
+  console.log(req.params);
+  res.send("Done");
+}); 
+
+router.patch("/users/update-password", async (req, res) => {
   const updates = Object.keys(req.body);
-  const allowedUpdates = ["name", "email", "password"];
+  const allowedUpdates = ["password"];
   const isValidOperation = updates.every((update) =>
     allowedUpdates.includes(update)
   );
