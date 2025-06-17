@@ -1,5 +1,5 @@
 import React, { useState, useRef, useContext, Fragment } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 import classes from "./AuthForm.module.css";
 import AuthContext from "../../store/auth-context";
@@ -129,6 +129,7 @@ const AuthForm = () => {
             ref={passwordInputRef}
           />
         </div>
+        {isLogin && <p className={classes.forgotPasswordLink}><Link to="/forgot-password">שכחתי סיסמא</Link></p>}
         {wrongInputMessage !== "" && (
           <div className={classes.error}>{wrongInputMessage}</div>
         )}

@@ -9,6 +9,7 @@ import UserProfile from "./components/Profile/UserProfile";
 import NewRequestsPage from "./pages/NewRequestsPage";
 import PendingRequestsPage from "./pages/PendingRequestsPage";
 import RequestsHistoryPage from "./pages/RequestsHistoryPage";
+import ForgotPasswordPage from "./pages/ForgotPassword";
 
 function App() {
   const authCtx = useContext(AuthContext);
@@ -18,6 +19,7 @@ function App() {
       <Routes>
         <Route path="/" element={<HomePage />} />
         {!authCtx.isLoggedIn && <Route path="/auth" element={<AuthPage />} />}
+        {!authCtx.isLoggedIn && <Route path="/forgot-password" element={<ForgotPasswordPage />} />}
         {authCtx.isLoggedIn && (
           <Route path="/profile" element={<UserProfile />} />
         )}
