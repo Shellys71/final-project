@@ -6,10 +6,18 @@ import AuthContext from "../../store/auth-context";
 import useHttp from "../../hooks/use-http";
 import ErrorPage from "../../pages/ErrorPage";
 
+const isName = (value) => !/\d/.test(value);
+const isEmail = (value) => value.includes("@");
+const isRightPassword = (value) => value.length >= 7;
+const isRightIdfNumber = (value) => value.length === 7 && /^\d+$/.test(value);
+
 const AuthForm = () => {
   const navigate = useNavigate();
 
   const { isLoading, error, sendRequest: sendUserRequest } = useHttp();
+
+  const [wrongInputMessage, setWrongInputMessage] = useState("");
+  const [isLogin, setIsLogin] = useState(true);
 
   const emailInputRef = useRef();
   const passwordInputRef = useRef();
@@ -19,8 +27,6 @@ const AuthForm = () => {
   const authCtx = useContext(AuthContext);
 
   const { login } = authCtx;
-
-  const [isLogin, setIsLogin] = useState(true);
 
   const switchAuthModeHandler = () => {
     setIsLogin((prevState) => !prevState);
@@ -37,9 +43,25 @@ const AuthForm = () => {
     if (!isLogin) {
       enteredName = nameInputRef.current.value;
       enteredIdfNumber = idfNumberInputRef.current.value;
+      if (!isName(enteredName)) {
+        setWrongInputMessage("שם לא יכול להכיל מספרים");
+        return;
+      }
+      if (!isRightIdfNumber(enteredIdfNumber)) {
+        setWrongInputMessage("מספר אישי חייב להכיל 7 מספרים בלבד");
+        return;
+      }
     }
 
-    // optional: Add validation
+    if (!isEmail(enteredEmail)) {
+      setWrongInputMessage("אימייל חייב להכיל @");
+      return;
+    }
+    if (!isRightPassword(enteredPassword)) {
+      setWrongInputMessage("סיסמא חייבת להכיל 7 מספרים לפחות");
+      return;
+    }
+
     let url;
     let body;
     if (isLogin) {
@@ -75,7 +97,6 @@ const AuthForm = () => {
     <Fragment>
       <h1>{isLogin ? "התחברות" : "הרשמה"}</h1>
       <form onSubmit={submitHandler}>
-        {error && <p className={classes.error}>{error}</p>}
         {!isLogin && (
           <div className={classes.control}>
             <label htmlFor="name">שם מלא</label>
@@ -88,6 +109,7 @@ const AuthForm = () => {
             <input
               type="number"
               id="idfNumber"
+              maxLength={7}
               required
               ref={idfNumberInputRef}
             />
@@ -102,10 +124,14 @@ const AuthForm = () => {
           <input
             type="password"
             id="password"
+            minLength={7}
             required
             ref={passwordInputRef}
           />
         </div>
+        {wrongInputMessage !== "" && (
+          <div className={classes.error}>{wrongInputMessage}</div>
+        )}
         <div className={classes.actions}>
           {!isLoading && <button>{isLogin ? "התחבר" : "צור חשבון"}</button>}
           {isLoading && <p>הבקשה נשלחת...</p>}
