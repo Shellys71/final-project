@@ -86,11 +86,11 @@ const RequestsList = () => {
               )}
               {request.description}
               <br />
-              <p>{request.explanation}</p>
+              <p className={classes.text}>{request.explanation}</p>
             </div>
           ))
         ) : (
-          <p>אין בקשות סגורות כרגע</p>
+          <p className={classes.text}>אין בקשות סגורות כרגע</p>
         )}
       </div>
     </Fragment>
