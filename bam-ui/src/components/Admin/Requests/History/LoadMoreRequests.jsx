@@ -3,7 +3,7 @@ import React, { useState, Fragment } from "react";
 import classes from "./LoadMoreRequests.module.css";
 
 const SkipRequests = (props) => {
-  const RANGE = 5;
+  const RANGE = parseInt(process.env.REACT_APP_RANGE, 10);
 
   const [currentLimit, setCurrentLimit] = useState(props.currentLimit);
 

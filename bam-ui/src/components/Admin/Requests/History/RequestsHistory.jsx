@@ -9,7 +9,7 @@ import LoadMoreRequests from "./LoadMoreRequests";
 import ErrorPage from "../../../../pages/ErrorPage";
 
 const RequestsHistory = () => {
-  const RANGE = 5;
+  const RANGE = parseInt(process.env.REACT_APP_RANGE, 10);
 
   const [requestList, setRequestList] = useState([]);
   const [requestsLimit, setRequestsLimit] = useState(RANGE);
