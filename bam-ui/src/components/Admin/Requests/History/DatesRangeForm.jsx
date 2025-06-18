@@ -4,7 +4,6 @@ import LoadingSpinner from "../../../UI/LoadingSpinner";
 import classes from "./DatesRangeForm.module.css";
 import AuthContext from "../../../../store/auth-context";
 import useHttp from "../../../../hooks/use-http";
-import ErrorPage from "../../../../pages/ErrorPage";
 
 const DatesRangeForm = (props) => {
   const [fromDate, setFromDate] = useState("");
