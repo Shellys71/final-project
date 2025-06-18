@@ -26,7 +26,7 @@ const RequestsForm = () => {
       description: enteredDescription,
       explanation: enteredExplanation,
       status: {
-        state: "pending",
+        state: process.env.REACT_APP_PENDING,
       },
     };
     sendUserRequest(

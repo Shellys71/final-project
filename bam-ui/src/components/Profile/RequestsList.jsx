@@ -7,8 +7,8 @@ import LoadingSpinner from "../UI/LoadingSpinner";
 import ErrorPage from "../../pages/ErrorPage";
 
 const RequestsList = () => {
-  const PENDING_REQUEST = "pending";
-  const APPROVED_REQUEST = "approved";
+  const PENDING_REQUEST = process.env.REACT_APP_PENDING;
+  const APPROVED_REQUEST = process.env.REACT_APP_APPROVED;
 
   const [pendingRequestList, setPendingRequestList] = useState([]);
   const [closedRequestList, setClosedRequestList] = useState([]);
