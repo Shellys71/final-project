@@ -5,11 +5,9 @@ import AuthContext from "../../store/auth-context";
 import useHttp from "../../hooks/use-http";
 import LoadingSpinner from "../UI/LoadingSpinner";
 import ErrorPage from "../../pages/ErrorPage";
+import { State } from "../../utils/request"; 
 
 const RequestsList = () => {
-  const PENDING_REQUEST = process.env.REACT_APP_PENDING;
-  const APPROVED_REQUEST = process.env.REACT_APP_APPROVED;
-
   const [pendingRequestList, setPendingRequestList] = useState([]);
   const [closedRequestList, setClosedRequestList] = useState([]);
 
@@ -31,12 +29,12 @@ const RequestsList = () => {
       }
       setPendingRequestList(
         filteredRequests.filter((request) => {
-          return request.status.state === PENDING_REQUEST;
+          return request.status.state === State.PENDING;
         })
       );
       setClosedRequestList(
         filteredRequests.filter((request) => {
-          return request.status.state !== PENDING_REQUEST;
+          return request.status.state !== State.PENDING;
         })
       );
     },
@@ -75,7 +73,7 @@ const RequestsList = () => {
         {closedRequestList.length !== 0 ? (
           closedRequestList.map((request) => (
             <div className={classes.request} key={request._id}>
-              {request.status.state === APPROVED_REQUEST ? (
+              {request.status.state === State.APPROVED ? (
                 <p className={classes.approved}>אושרה</p>
               ) : (
                 <p className={classes.rejected}>

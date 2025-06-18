@@ -14,6 +14,7 @@ import PendingRequestItem from "./PendingRequestItem";
 import ChangeStateModal from "./Modals/ChangeStateModal";
 import CategorySelection from "./CategorySelection";
 import ErrorPage from "../../../../pages/ErrorPage";
+import { State } from "../../../../utils/request";
 
 const RequestsList = () => {
   const [pendingRequestList, setPendingRequestList] = useState([]);
@@ -53,7 +54,7 @@ const RequestsList = () => {
         },
         body: {
           status: {
-            state: "approved",
+            state: State.APPROVED,
           },
         },
       },
@@ -76,7 +77,7 @@ const RequestsList = () => {
         },
         body: {
           status: {
-            state: "rejected",
+            state: State.REJECTED,
             details: enteredDetails,
           },
         },

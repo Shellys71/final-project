@@ -4,6 +4,7 @@ import classes from "./RequestsForm.module.css";
 import AuthContext from "../../store/auth-context";
 import useHttp from "../../hooks/use-http";
 import ErrorPage from "../../pages/ErrorPage";
+import { State } from "../../utils/request";
 
 const RequestsForm = () => {
   const authCtx = useContext(AuthContext);
@@ -26,7 +27,7 @@ const RequestsForm = () => {
       description: enteredDescription,
       explanation: enteredExplanation,
       status: {
-        state: process.env.REACT_APP_PENDING,
+        state: State.PENDING,
       },
     };
     sendUserRequest(

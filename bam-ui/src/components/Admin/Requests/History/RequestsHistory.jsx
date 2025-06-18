@@ -7,10 +7,9 @@ import LoadingSpinner from "../../../UI/LoadingSpinner";
 import DatesRangeForm from "./DatesRangeForm";
 import LoadMoreRequests from "./LoadMoreRequests";
 import ErrorPage from "../../../../pages/ErrorPage";
+import { RANGE } from "../../../../utils/request";
 
 const RequestsHistory = () => {
-  const RANGE = parseInt(process.env.REACT_APP_RANGE, 10);
-
   const [requestList, setRequestList] = useState([]);
   const [requestsLimit, setRequestsLimit] = useState(RANGE);
 
