@@ -2,6 +2,7 @@ const express = require("express");
 const Request = require("../models/request");
 const auth = require("../middleware/auth");
 const router = new express.Router();
+const CODES = require("../utils/status-codes");
 
 router.post("/requests", auth, async (req, res) => {
   const request = new Request({
@@ -11,9 +12,9 @@ router.post("/requests", auth, async (req, res) => {
 
   try {
     await request.save();
-    res.status(201).send(request);
+    res.status(CODES.CREATED).send(request);
   } catch (e) {
-    res.status(400).send();
+    res.status(CODES.BAD_REQUEST).send();
   }
 });
 
@@ -58,13 +59,13 @@ router.get("/requests", auth, async (req, res) => {
     }).populate("owner");
     res.send(sortedRequests);
   } catch (e) {
-    res.status(500).send();
+    res.status(CODES.INTERNAL_SERVER_ERROR).send();
   }
 });
 
 router.patch("/requests/:id", auth, async (req, res) => {
   if (!req.user.isAdmin) {
-    return res.status(401).send("Only admins can update data!");
+    return res.status(CODES.UNAUTHORIZED).send("Only admins can update data!");
   }
 
   const updates = Object.keys(req.body);
@@ -74,7 +75,7 @@ router.patch("/requests/:id", auth, async (req, res) => {
   );
 
   if (!isValidOperation) {
-    return res.status(400).send({ error: "Invalid updates!" });
+    return res.status(CODES.BAD_REQUEST).send({ error: "Invalid updates!" });
   }
 
   try {
@@ -83,14 +84,14 @@ router.patch("/requests/:id", auth, async (req, res) => {
     });
 
     if (!request) {
-      return res.status(404).send();
+      return res.status(CODES.NOT_FOUND).send();
     }
 
     updates.forEach((update) => (request[update] = req.body[update]));
     await request.save();
     res.send(request);
   } catch (e) {
-    res.status(400).send();
+    res.status(CODES.BAD_REQUEST).send();
   }
 });
 
