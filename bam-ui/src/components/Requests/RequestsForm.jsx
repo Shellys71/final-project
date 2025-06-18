@@ -31,7 +31,7 @@ const RequestsForm = () => {
     };
     sendUserRequest(
       {
-        url: "http://localhost:5000/requests",
+        url: `${process.env.REACT_APP_HOST}/requests`,
         method: "POST",
         headers: {
           Authorization: authCtx.token,

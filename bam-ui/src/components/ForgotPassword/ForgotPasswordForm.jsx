@@ -28,7 +28,7 @@ const AuthForm = () => {
 
     sendUserRequest(
       {
-        url: "http://localhost:5000/users/forgot-password",
+        url: `${process.env.REACT_APP_HOST}/users/forgot-password`,
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: { email: enteredEmail },

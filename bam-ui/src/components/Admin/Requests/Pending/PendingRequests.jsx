@@ -33,7 +33,7 @@ const RequestsList = () => {
   useEffect(() => {
     sendUserRequest(
       {
-        url: "http://localhost:5000/requests?state=pending",
+        url: `${process.env.REACT_APP_HOST}/requests?state=pending`,
         headers: { Authorization: authCtx.token },
       },
       (data) => {
@@ -45,7 +45,7 @@ const RequestsList = () => {
   const approvedStateRequest = () => {
     sendUserRequest(
       {
-        url: `http://localhost:5000/requests/${currentRequestId}`,
+        url: `${process.env.REACT_APP_HOST}/requests/${currentRequestId}`,
         method: "PATCH",
         headers: {
           Authorization: authCtx.token,
@@ -68,7 +68,7 @@ const RequestsList = () => {
     }
     sendUserRequest(
       {
-        url: `http://localhost:5000/requests/${currentRequestId}`,
+        url: `${process.env.REACT_APP_HOST}/requests/${currentRequestId}`,
         method: "PATCH",
         headers: {
           Authorization: authCtx.token,

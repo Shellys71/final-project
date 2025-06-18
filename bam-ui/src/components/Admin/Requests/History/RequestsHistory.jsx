@@ -21,7 +21,7 @@ const RequestsHistory = () => {
   useEffect(() => {
     sendUserRequest(
       {
-        url: `http://localhost:5000/requests?limit=${requestsLimit}`,
+        url: `${process.env.REACT_APP_HOST}/requests?limit=${requestsLimit}`,
         headers: { Authorization: authCtx.token },
       },
       (data) => {

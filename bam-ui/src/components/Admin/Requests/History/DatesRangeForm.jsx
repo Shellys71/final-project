@@ -24,9 +24,9 @@ const DatesRangeForm = (props) => {
     let url;
     const requestsLimit = props.requestsLimit;
     if (requestsLimit) {
-      url = `http://localhost:5000/requests?limit=${requestsLimit}&from=${currentFromDate}&until=${currentUntilDate}`;
+      url = `${process.env.REACT_APP_HOST}/requests?limit=${requestsLimit}&from=${currentFromDate}&until=${currentUntilDate}`;
     } else {
-      url = `http://localhost:5000/requests?limit=5&from=${currentFromDate}&until=${currentUntilDate}`;
+      url = `${process.env.REACT_APP_HOST}/requests?limit=5&from=${currentFromDate}&until=${currentUntilDate}`;
     }
     sendUserRequest(
       {

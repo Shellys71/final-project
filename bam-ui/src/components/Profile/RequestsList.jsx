@@ -46,7 +46,7 @@ const RequestsList = () => {
   useEffect(() => {
     sendUserRequest(
       {
-        url: "http://localhost:5000/requests",
+        url: `${process.env.REACT_APP_HOST}/requests`,
         headers: { Authorization: authCtx.token },
       },
       setRequestListHandler

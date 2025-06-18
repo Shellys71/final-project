@@ -65,13 +65,13 @@ const AuthForm = () => {
     let url;
     let body;
     if (isLogin) {
-      url = "http://localhost:5000/users/login";
+      url = `${process.env.REACT_APP_HOST}/users/login`;
       body = {
         email: enteredEmail,
         password: enteredPassword,
       };
     } else {
-      url = "http://localhost:5000/users";
+      url = `${process.env.REACT_APP_HOST}/users`;
       body = {
         name: enteredName,
         idfNumber: enteredIdfNumber,
