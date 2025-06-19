@@ -10,6 +10,7 @@ import NewRequestsPage from "./pages/NewRequestsPage";
 import PendingRequestsPage from "./pages/PendingRequestsPage";
 import RequestsHistoryPage from "./pages/RequestsHistoryPage";
 import ForgotPasswordPage from "./pages/ForgotPassword";
+import ResetPasswordPage from "./pages/ResetPasswordPage";
 
 function App() {
   const authCtx = useContext(AuthContext);
@@ -21,6 +22,12 @@ function App() {
         {!authCtx.isLoggedIn && <Route path="/auth" element={<AuthPage />} />}
         {!authCtx.isLoggedIn && (
           <Route path="/forgot-password" element={<ForgotPasswordPage />} />
+        )}
+        {!authCtx.isLoggedIn && (
+          <Route
+            path="/users/reset-password/:id/:token"
+            element={<ResetPasswordPage />}
+          />
         )}
         {authCtx.isLoggedIn && (
           <Route path="/profile" element={<UserProfile />} />
