@@ -24,10 +24,7 @@ function App() {
           <Route path="/forgot-password" element={<ForgotPasswordPage />} />
         )}
         {!authCtx.isLoggedIn && (
-          <Route
-            path="/users/reset-password/:id/:token"
-            element={<ResetPasswordPage />}
-          />
+          <Route path="/reset-password" element={<ResetPasswordPage />} />
         )}
         {authCtx.isLoggedIn && (
           <Route path="/profile" element={<UserProfile />} />
