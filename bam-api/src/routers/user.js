@@ -51,17 +51,17 @@ router.post("/users/forgot-password", async (req, res) => {
   try {
     const existingUser = await User.findOne({ email });
     if (!existingUser) {
-      return res.json({ status: "User Not Exists!" });
+      return res.json({ message: "משתמש לא קיים!" });
     }
     const secret = process.env.JWT_SECRET + existingUser.password;
     const token = jwt.sign(
       { email: existingUser.email, id: existingUser._id },
       secret,
-      { expiresIn: "5m" }
+      { expiresIn: "10m" }
     );
-    const link = `${process.env.HOST}/users/reset-password/${existingUser._id}/${token}`;
+    const link = `${process.env.REACT_CLIENT_HOST}/reset-password?id=${existingUser._id}&token=${token}`;
 
-    let transporter = nodemailer.createTransport({
+    const transporter = nodemailer.createTransport({
       service: "gmail",
       auth: {
         user: process.env.EMAIL_USER,
@@ -69,15 +69,14 @@ router.post("/users/forgot-password", async (req, res) => {
       },
     });
 
-    let mailOptions = {
-      from: "youremail@gmail.com",
+    const mailOptions = {
+      from: process.env.EMAIL_USER,
       to: process.env.EMAIL_USER,
       subject: "Password Reset",
-      text: link,
+      html: `<p>לחץ על הקישור בכדי להחליף את הסיסמא: <a href=${link}>${link}</a></p>`,
     };
 
     transporter.sendMail(mailOptions, function (error, info) {
-      console.log("hi");
       if (error) {
         console.log(error);
       } else {
@@ -85,36 +84,19 @@ router.post("/users/forgot-password", async (req, res) => {
       }
     });
 
-    console.log(link);
-    res.send(link);
+    res.status(CODES.CREATED).json({ message: "האימייל נשלח בהצלחה! תוכל להחליף סיסמא רק למשך 10 דקות לאחר קבלת האימייל." });
   } catch (e) {
-    res.status(CODES.NOT_FOUND).send();
+    res
+      .status(CODES.NOT_FOUND)
+      .json({ message: "משהו השתבש בשליחת האימייל... נסה שוב מאוחר יותר." });
   }
 });
 
-router.get("/users/reset-password/:id/:token", async (req, res) => {
-  const { id, token } = req.params;
-  console.log(req.params);
+router.post("/users/reset-password/", async (req, res) => {
+  const { id, token, password } = req.body;
   const existingUser = await User.findOne({ _id: id });
   if (!existingUser) {
-    return res.json({ status: "User Not Exists!" });
-  }
-  const secret = process.env.JWT_SECRET + existingUser.password;
-  try {
-    const verify = jwt.verify(token, secret);
-    res.send({ email: verify.email });
-  } catch (e) {
-    res.send("Not Verified!");
-  }
-});
-
-router.post("/users/reset-password/:id/:token", async (req, res) => {
-  const { id, token } = req.params;
-  const { password } = req.body;
-  console.log(req.params);
-  const existingUser = await User.findOne({ _id: id });
-  if (!existingUser) {
-    return res.json({ status: "User Not Exists!" });
+    return res.json({ message: "משתמש לא קיים!" });
   }
   const secret = process.env.JWT_SECRET + existingUser.password;
   try {
@@ -131,10 +113,10 @@ router.post("/users/reset-password/:id/:token", async (req, res) => {
       }
     );
 
-    // res.send({ email: verify.email });
-    res.json({ status: "Password Updated!" });
+    res.status(CODES.CREATED).json({ message: "הסיסמא עודכנה בהצלחה!" });
   } catch (e) {
-    res.json({ status: "Something Went Wrong!" });
+    console.log(e);
+    res.status(CODES.INTERNAL_SERVER_ERROR).send();
   }
 });
 
