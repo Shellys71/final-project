@@ -10,14 +10,14 @@ const AuthForm = () => {
   const { isLoading, error, sendRequest: sendUserRequest } = useHttp();
 
   const [wrongInputMessage, setWrongInputMessage] = useState("");
-//   const [successMessage, setSuccessMessage] = useState("");
+  const [message, setMessage] = useState("");
 
   const emailInputRef = useRef();
 
   const submitHandler = (event) => {
     event.preventDefault();
 
-    // setSuccessMessage("");
+    setMessage("");
 
     const enteredEmail = emailInputRef.current.value;
 
@@ -34,7 +34,7 @@ const AuthForm = () => {
         body: { email: enteredEmail },
       },
       (data) => {
-        alert(data.status);
+        setMessage(data.message);
       }
     );
   };
@@ -51,9 +51,9 @@ const AuthForm = () => {
           <div className={classes.error}>{wrongInputMessage}</div>
         )}
         <div className={classes.actions}>
-          {!isLoading && <button>שלח לי אימייל</button>}
+          {!isLoading && message === "" && <button>שלח לי אימייל</button>}
           {isLoading && <p>הבקשה נשלחת...</p>}
-          {/* {successMessage !== "" && <p>{successMessage}</p>} */}
+          {message !== "" && <p>{message}</p>}
         </div>
       </form>
     </Fragment>
