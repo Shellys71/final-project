@@ -1,4 +1,5 @@
 import React, { useState, useRef, Fragment } from "react";
+import { useSearchParams, useNavigate } from "react-router-dom";
 
 import classes from "./ForgotPasswordForm.module.css";
 import useHttp from "../../hooks/use-http";
@@ -7,10 +8,16 @@ import ErrorPage from "../../pages/ErrorPage";
 const isRightPassword = (value) => value.length >= 7;
 
 const AuthForm = () => {
+  const [searchParams] = useSearchParams();
+  const id = searchParams.get("id");
+  const token = searchParams.get("token");
+
+  const navigate = useNavigate();
+
   const { isLoading, error, sendRequest: sendUserRequest } = useHttp();
 
   const [wrongInputMessage, setWrongInputMessage] = useState("");
-  //   const [successMessage, setSuccessMessage] = useState("");
+  const [message, setMessage] = useState("");
 
   const passwordInputRef = useRef();
   const confirmPasswordInputRef = useRef();
@@ -18,7 +25,7 @@ const AuthForm = () => {
   const submitHandler = (event) => {
     event.preventDefault();
 
-    // setSuccessMessage("");
+    setMessage("");
 
     const enteredPassword = passwordInputRef.current.value;
     const enteredConfirmPassword = confirmPasswordInputRef.current.value;
@@ -41,10 +48,11 @@ const AuthForm = () => {
         url: `${process.env.REACT_APP_HOST}/users/reset-password`,
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: { email: enteredPassword },
+        body: { id, token, password: enteredPassword },
       },
       (data) => {
-        alert(data.status);
+        alert(data.message);
+        navigate("/auth");
       }
     );
   };
@@ -52,7 +60,7 @@ const AuthForm = () => {
   const pageContent = (
     <Fragment>
       <form onSubmit={submitHandler}>
-        <h1>אימייל</h1>
+        <h1>סיסמא חדשה</h1>
         <div className={classes.control}>
           <label htmlFor="password">סיסמא</label>
           <input
@@ -70,7 +78,7 @@ const AuthForm = () => {
             id="confirm-password"
             minLength={7}
             required
-            ref={passwordInputRef}
+            ref={confirmPasswordInputRef}
           />
         </div>
         {wrongInputMessage !== "" && (
@@ -79,7 +87,7 @@ const AuthForm = () => {
         <div className={classes.actions}>
           {!isLoading && <button>החלף סיסמא</button>}
           {isLoading && <p>הבקשה נשלחת...</p>}
-          {/* {successMessage !== "" && <p>{successMessage}</p>} */}
+          {message !== "" && <p>{message}</p>}
         </div>
       </form>
     </Fragment>
