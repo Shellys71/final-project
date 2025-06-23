@@ -49,16 +49,19 @@ const RequestsHistory = () => {
               {request.description}
               <br />
               <p>{request.explanation}</p>
+              <p>{request.createdAt.slice(0, 10)}</p>
             </div>
           ))
         ) : (
           <p>אין בקשות כרגע</p>
         )}
       </div>
-      <LoadMoreRequests
-        currentLimit={requestsLimit}
-        onChangeLimit={changeLimitHandler}
-      />
+      {requestList.length !== 0 && (
+        <LoadMoreRequests
+          currentLimit={requestsLimit}
+          onChangeLimit={changeLimitHandler}
+        />
+      )}
     </Fragment>
   );
 

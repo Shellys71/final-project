@@ -10,18 +10,14 @@ const PendingRequestItem = (props) => {
       <br />
       <p>פירוט: {props.explanation}</p>
       <p>תאריך: {props.createdAt}</p>
-      <button
-        className={classes.approve}
-        onClick={props.onApprove}
-      >
-        אשר
-      </button>
-      <button
-        className={classes.reject}
-        onClick={props.onReject}
-      >
-        סרב
-      </button>
+      <div className={classes.stateButtons}>
+        <button className={classes.approve} onClick={props.onApprove}>
+          אשר
+        </button>
+        <button className={classes.reject} onClick={props.onReject}>
+          סרב
+        </button>
+      </div>
     </div>
   );
 };

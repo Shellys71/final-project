@@ -59,6 +59,7 @@ const RequestsList = () => {
         {pendingRequestList.length !== 0 ? (
           pendingRequestList.map((request) => (
             <div className={classes.request} key={request._id}>
+              <p>שולח הבקשה: {request.owner.name}</p>
               {request.description}
               <br />
               <p>{request.explanation}</p>

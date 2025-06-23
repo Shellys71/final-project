@@ -23,14 +23,16 @@ h1 {
 }
 
 .request {
+  text-align: center;
   margin: 1rem 1rem;
   color: #003b7a;
   font-size: 1.25rem;
   border: 0.1vh solid #003b7a;
   border-radius: 10px;
   padding: 2vh;
-  cursor: pointer;
   background-color: #f5faff;
+  width: 15vw;
+  height: 22vh;
 }
 
 .request p {

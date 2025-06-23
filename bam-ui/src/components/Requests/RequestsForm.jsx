@@ -68,7 +68,7 @@ const RequestsForm = () => {
         </div>
         <div className={classes.control}>
           <label htmlFor="explanation">פירוט</label>
-          <textarea id="explanation" required ref={explanationInputRef} />
+          <textarea id="explanation" maxLength={45} required ref={explanationInputRef} />
         </div>
         <div className={classes.actions}>
           {!isLoading && <button>צור בקשה</button>}
