@@ -11,9 +11,15 @@ import PendingRequestsPage from "./pages/PendingRequestsPage";
 import RequestsHistoryPage from "./pages/RequestsHistoryPage";
 import ForgotPasswordPage from "./pages/ForgotPassword";
 import ResetPasswordPage from "./pages/ResetPasswordPage";
+import ErrorPage from "./pages/ErrorPage";
 
 function App() {
   const authCtx = useContext(AuthContext);
+
+  const pageNotFoundObject = {
+    code: 404,
+    info: "Not Found"
+  };
 
   return (
     <Layout>
@@ -41,7 +47,7 @@ function App() {
         {!authCtx.isLoggedIn && (
           <Route path="/profile" element={<Navigate to="/auth" />} />
         )}
-        <Route path="*" element={<Navigate to="/" />} />
+        <Route path="*" element={<ErrorPage error={pageNotFoundObject}/>} />
       </Routes>
     </Layout>
   );
