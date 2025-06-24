@@ -53,7 +53,7 @@ const RequestsList = () => {
 
   const pageContent = (
     <Fragment>
-      {error && <p className={classes.error}>{error}</p>}
+      <h1>הבקשות שלך</h1>
       <h2 className={classes.title}>בקשות פתוחות</h2>
       <div className={classes.container}>
         {pendingRequestList.length !== 0 ? (

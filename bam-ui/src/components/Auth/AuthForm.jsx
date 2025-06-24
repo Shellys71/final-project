@@ -129,7 +129,11 @@ const AuthForm = () => {
             ref={passwordInputRef}
           />
         </div>
-        {isLogin && <p className={classes.forgotPasswordLink}><Link to="/forgot-password">שכחתי סיסמא</Link></p>}
+        {isLogin && (
+          <p className={classes.forgotPasswordLink}>
+            <Link to="/forgot-password">שכחתי סיסמא</Link>
+          </p>
+        )}
         {wrongInputMessage !== "" && (
           <div className={classes.error}>{wrongInputMessage}</div>
         )}
@@ -149,10 +153,13 @@ const AuthForm = () => {
   );
 
   return (
-    <section className={classes.auth}>
-      {error && <ErrorPage error={error} />}
-      {!error && pageContent}
-    </section>
+    <Fragment>
+      {error ? (
+        <ErrorPage error={error} />
+      ) : (
+        <section className={classes.content}>{!error && pageContent}</section>
+      )}
+    </Fragment>
   );
 };
 

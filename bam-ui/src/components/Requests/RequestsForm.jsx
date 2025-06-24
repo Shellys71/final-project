@@ -18,7 +18,7 @@ const RequestsForm = () => {
 
   const submitHandler = (event) => {
     event.preventDefault();
-    
+
     setSuccessMessage("");
     const enteredDescription = descriptionInputRef.current.value;
     const enteredExplanation = explanationInputRef.current.value;
@@ -68,7 +68,12 @@ const RequestsForm = () => {
         </div>
         <div className={classes.control}>
           <label htmlFor="explanation">פירוט</label>
-          <textarea id="explanation" maxLength={45} required ref={explanationInputRef} />
+          <textarea
+            id="explanation"
+            maxLength={45}
+            required
+            ref={explanationInputRef}
+          />
         </div>
         <div className={classes.actions}>
           {!isLoading && <button>צור בקשה</button>}
@@ -81,10 +86,13 @@ const RequestsForm = () => {
   );
 
   return (
-    <section className={classes.content}>
-      {error && <ErrorPage error={error} />}
-      {!error && pageContent}
-    </section>
+    <Fragment>
+      {error ? (
+        <ErrorPage error={error} />
+      ) : (
+        <section className={classes.content}>{!error && pageContent}</section>
+      )}
+    </Fragment>
   );
 };
 

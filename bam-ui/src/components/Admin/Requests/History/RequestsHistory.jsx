@@ -66,11 +66,16 @@ const RequestsHistory = () => {
   );
 
   return (
-    <section className={classes.section}>
-      {error && <ErrorPage error={error} />}
-      {isLoading && <LoadingSpinner />}
-      {!error && !isLoading && pageContent}
-    </section>
+    <Fragment>
+      {error ? (
+        <ErrorPage error={error} />
+      ) : (
+        <section className={classes.section}>
+          {isLoading && <LoadingSpinner />}
+          {!error && !isLoading && pageContent}
+        </section>
+      )}
+    </Fragment>
   );
 };
 

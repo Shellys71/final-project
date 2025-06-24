@@ -6,7 +6,6 @@ import RequestsList from './RequestsList';
 const UserProfile = () => {
   return (
     <section className={classes.profile}>
-      <h1>הבקשות שלך</h1>
       <RequestsList />
     </section>
   );

@@ -157,21 +157,26 @@ const RequestsList = () => {
   );
 
   return (
-    <section className={classes.section}>
-      {error && <ErrorPage error={error} />}
-      {isLoading && <LoadingSpinner />}
-      {!error && !isLoading && pageContent}
-      {modalIsShown && (
-        <ChangeStateModal
-          ownerName={currentRequestOwner}
-          onClose={hideModalHandler}
-          selectedState={selectedState}
-          approveRequest={approvedStateRequest}
-          rejectRequest={rejectedStateRequest}
-          detailsInputRef={detailsInputRef}
-        />
+    <Fragment>
+      {error ? (
+        <ErrorPage error={error} />
+      ) : (
+        <section className={classes.section}>
+          {isLoading && <LoadingSpinner />}
+          {!error && !isLoading && pageContent}
+          {modalIsShown && (
+            <ChangeStateModal
+              ownerName={currentRequestOwner}
+              onClose={hideModalHandler}
+              selectedState={selectedState}
+              approveRequest={approvedStateRequest}
+              rejectRequest={rejectedStateRequest}
+              detailsInputRef={detailsInputRef}
+            />
+          )}
+        </section>
       )}
-    </section>
+    </Fragment>
   );
 };
 
