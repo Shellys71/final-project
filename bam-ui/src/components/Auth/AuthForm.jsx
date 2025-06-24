@@ -157,7 +157,7 @@ const AuthForm = () => {
       {error ? (
         <ErrorPage error={error} />
       ) : (
-        <section className={classes.content}>{!error && pageContent}</section>
+        <section className={classes.auth}>{pageContent}</section>
       )}
     </Fragment>
   );

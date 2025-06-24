@@ -94,10 +94,13 @@ const AuthForm = () => {
   );
 
   return (
-    <section className={classes.forgotPassword}>
-      {error && <ErrorPage error={error} />}
-      {!error && pageContent}
-    </section>
+    <Fragment>
+      {error ? (
+        <ErrorPage error={error} />
+      ) : (
+        <section className={classes.forgotPassword}>{pageContent}</section>
+      )}
+    </Fragment>
   );
 };
 

@@ -90,7 +90,7 @@ const RequestsForm = () => {
       {error ? (
         <ErrorPage error={error} />
       ) : (
-        <section className={classes.content}>{!error && pageContent}</section>
+        <section className={classes.content}>{pageContent}</section>
       )}
     </Fragment>
   );
