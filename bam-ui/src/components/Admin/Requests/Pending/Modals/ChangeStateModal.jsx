@@ -2,13 +2,14 @@ import React, { useEffect, useState } from "react";
 
 import Modal from "../../../../UI/Modal";
 import classes from "./ChangeStateModal.module.css";
+import { State } from "../../../../../utils/request";
 
 const ChangeStateModal = (props) => {
   const [approveModal, setApproveModal] = useState(false);
   const [rejectModal, setRejectModal] = useState(false);
 
   useEffect(() => {
-    if (props.selectedState === "approve") {
+    if (props.selectedState === State.APPROVED) {
       setApproveModal(true);
     } else {
       setRejectModal(true);

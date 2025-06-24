@@ -94,14 +94,14 @@ const RequestsList = () => {
     setCurrentRequestOwner(ownerName);
     setCurrentRequestId(requestId);
     setModalIsShown(true);
-    setSelectedState("approve");
+    setSelectedState(State.APPROVED);
   };
 
   const rejectRequestHandler = (requestId, ownerName) => {
     setCurrentRequestOwner(ownerName);
     setCurrentRequestId(requestId);
     setModalIsShown(true);
-    setSelectedState("reject");
+    setSelectedState(State.REJECTED);
   };
 
   const sortByCategoryHandler = (category) => {
