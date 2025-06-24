@@ -53,13 +53,10 @@ router.post("/users/forgot-password", async (req, res) => {
     if (!existingUser) {
       return res.json({ message: "משתמש לא קיים!" });
     }
-    const secret = process.env.JWT_SECRET + existingUser.password;
-    const token = jwt.sign(
-      { email: existingUser.email, id: existingUser._id },
-      secret,
-      { expiresIn: "10m" }
-    );
-    const link = `${process.env.REACT_CLIENT_HOST}/reset-password?id=${existingUser._id}&token=${token}`;
+    const token = jwt.sign({ email }, process.env.JWT_SECRET, {
+      expiresIn: "10m",
+    });
+    const link = `${process.env.REACT_CLIENT_HOST}/reset-password?token=${token}`;
 
     const transporter = nodemailer.createTransport({
       service: "gmail",
@@ -84,7 +81,10 @@ router.post("/users/forgot-password", async (req, res) => {
       }
     });
 
-    res.status(CODES.CREATED).json({ message: "האימייל נשלח בהצלחה! תוכל להחליף סיסמא רק למשך 10 דקות לאחר קבלת האימייל." });
+    res.status(CODES.CREATED).json({
+      message:
+        "האימייל נשלח בהצלחה! תוכל להחליף סיסמא רק למשך 10 דקות לאחר קבלת האימייל.",
+    });
   } catch (e) {
     res
       .status(CODES.NOT_FOUND)
@@ -93,22 +93,18 @@ router.post("/users/forgot-password", async (req, res) => {
 });
 
 router.post("/users/reset-password/", async (req, res) => {
-  const { id, token, password } = req.body;
-  const existingUser = await User.findOne({ _id: id });
-  if (!existingUser) {
-    return res.json({ message: "משתמש לא קיים!" });
-  }
-  const secret = process.env.JWT_SECRET + existingUser.password;
+  const { token, password } = req.body;
+
   try {
-    const verify = jwt.verify(token, secret);
-    const encryptedPassword = await bcrypt.hash(password, 8);
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const hashedPassword = await bcrypt.hash(password, 8);
     await User.updateOne(
       {
-        _id: id,
+        email: decoded.email,
       },
       {
         $set: {
-          password: encryptedPassword,
+          password: hashedPassword,
         },
       }
     );
