@@ -1,5 +1,6 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import { Routes, Route, Navigate } from "react-router";
+import { socket } from "./socket";
 
 import Layout from "./components/Layout/Layout";
 import AuthPage from "./pages/AuthPage";
@@ -20,6 +21,24 @@ function App() {
     code: 404,
     info: "Not Found"
   };
+
+  useEffect(() => {
+    function onConnect() {
+      console.log("Connected successfuly!");
+    }
+
+    function onDisconnect() {
+      console.log("Disconnected successfuly!");
+    }
+
+    socket.on('connect', onConnect);
+    socket.on('disconnect', onDisconnect);
+
+    return () => {
+      socket.off('connect', onConnect);
+      socket.off('disconnect', onDisconnect);
+    };
+  }, []);
 
   return (
     <Layout>

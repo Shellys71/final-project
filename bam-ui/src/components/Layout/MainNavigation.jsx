@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 
 import classes from "./MainNavigation.module.css";
 import AuthContext from "../../store/auth-context";
+import { socket } from "../../socket";
 
 const MainNavigation = () => {
   const navigate = useNavigate();
@@ -12,6 +13,7 @@ const MainNavigation = () => {
   const logoutHandler = () => {
     logout();
     navigate("/auth");
+    socket.disconnect();
   };
 
   return (

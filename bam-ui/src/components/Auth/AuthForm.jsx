@@ -1,4 +1,5 @@
 import React, { useState, useRef, useContext, Fragment } from "react";
+import { socket } from "../../socket";
 import { Link, useNavigate } from "react-router-dom";
 
 import classes from "./AuthForm.module.css";
@@ -89,6 +90,7 @@ const AuthForm = () => {
       (data) => {
         login(data.token, data.user);
         navigate("/");
+        socket.connect();
       }
     );
   };
