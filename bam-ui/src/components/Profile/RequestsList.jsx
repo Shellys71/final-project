@@ -5,7 +5,8 @@ import AuthContext from "../../store/auth-context";
 import useHttp from "../../hooks/use-http";
 import LoadingSpinner from "../UI/LoadingSpinner";
 import ErrorPage from "../../pages/ErrorPage";
-import { State } from "../../utils/request"; 
+import { State } from "../../utils/request";
+import { socket } from "../../socket";
 
 const RequestsList = () => {
   const [pendingRequestList, setPendingRequestList] = useState([]);
@@ -42,6 +43,19 @@ const RequestsList = () => {
   );
 
   useEffect(() => {
+    socket.on("updateRequests", () => {
+      sendUserRequest(
+        {
+          url: `${process.env.REACT_APP_HOST}/requests`,
+          headers: { Authorization: authCtx.token },
+        },
+        (data) => {
+          console.log("hi im here updating");
+          setRequestListHandler(data);
+        }
+      );
+    });
+
     sendUserRequest(
       {
         url: `${process.env.REACT_APP_HOST}/requests`,
