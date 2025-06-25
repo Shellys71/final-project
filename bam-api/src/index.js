@@ -29,11 +29,11 @@ io.on("connection", (socket) => {
   console.log(`[INFO] WebSocket connection, ${socket.id}`);
 
   socket.on("approvedRequest", () => {
-    socket.emit("updateRequests");
+    io.emit("updateRequests");
   });
 
   socket.on("rejectedRequest", () => {
-    socket.emit("updateRequests");
+    io.emit("updateRequests");
   });
 
   socket.on("disconnect", () => {

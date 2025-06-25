@@ -49,10 +49,7 @@ const RequestsList = () => {
           url: `${process.env.REACT_APP_HOST}/requests`,
           headers: { Authorization: authCtx.token },
         },
-        (data) => {
-          console.log("hi im here updating");
-          setRequestListHandler(data);
-        }
+        setRequestListHandler
       );
     });
 
