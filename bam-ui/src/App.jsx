@@ -19,10 +19,14 @@ function App() {
 
   const pageNotFoundObject = {
     code: 404,
-    info: "Not Found"
+    info: "Not Found",
   };
 
   useEffect(() => {
+    if (authCtx.isLoggedIn) {
+      socket.connect();
+    }
+
     function onConnect() {
       console.log("Connected successfuly!");
     }
@@ -31,14 +35,14 @@ function App() {
       console.log("Disconnected successfuly!");
     }
 
-    socket.on('connect', onConnect);
-    socket.on('disconnect', onDisconnect);
+    socket.on("connect", onConnect);
+    socket.on("disconnect", onDisconnect);
 
     return () => {
-      socket.off('connect', onConnect);
-      socket.off('disconnect', onDisconnect);
+      socket.off("connect", onConnect);
+      socket.off("disconnect", onDisconnect);
     };
-  }, []);
+  }, [authCtx.isLoggedIn]);
 
   return (
     <Layout>
@@ -66,7 +70,7 @@ function App() {
         {!authCtx.isLoggedIn && (
           <Route path="/profile" element={<Navigate to="/auth" />} />
         )}
-        <Route path="*" element={<ErrorPage error={pageNotFoundObject}/>} />
+        <Route path="*" element={<ErrorPage error={pageNotFoundObject} />} />
       </Routes>
     </Layout>
   );
