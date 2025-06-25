@@ -15,6 +15,7 @@ import ChangeStateModal from "./Modals/ChangeStateModal";
 import CategorySelection from "./CategorySelection";
 import ErrorPage from "../../../../pages/ErrorPage";
 import { State } from "../../../../utils/request";
+import { socket } from "../../../../socket";
 
 const RequestsList = () => {
   const [pendingRequestList, setPendingRequestList] = useState([]);
@@ -32,6 +33,18 @@ const RequestsList = () => {
   const authCtx = useContext(AuthContext);
 
   useEffect(() => {
+    socket.on("updateRequests", () => {
+      sendUserRequest(
+        {
+          url: `${process.env.REACT_APP_HOST}/requests?state=pending`,
+          headers: { Authorization: authCtx.token },
+        },
+        (data) => {
+          setPendingRequestList(data);
+        }
+      );
+    });
+
     sendUserRequest(
       {
         url: `${process.env.REACT_APP_HOST}/requests?state=pending`,
@@ -58,7 +71,10 @@ const RequestsList = () => {
           },
         },
       },
-      hideModalHandler
+      () => {
+        hideModalHandler();
+        socket.emit("approvedRequest");
+      }
     );
   };
 
@@ -82,7 +98,10 @@ const RequestsList = () => {
           },
         },
       },
-      hideModalHandler
+      () => {
+        hideModalHandler();
+        socket.emit("rejectedRequest");
+      }
     );
   };
 
