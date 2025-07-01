@@ -1,7 +1,11 @@
+import { NextFunction, Response } from "express";
+import { AuthRequest } from "../types/express";
+
 const jwt = require("jsonwebtoken");
 const User = require("../models/user");
+const { StatusCodes } = require("../utils/status-codes");
 
-const auth = async (req, res, next) => {
+const auth = async (req: AuthRequest, res: Response, next: NextFunction) => {
   try {
     const token = req.header("Authorization");
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
@@ -14,11 +18,11 @@ const auth = async (req, res, next) => {
       throw new Error();
     }
 
-    req.token = token;
+    req.token = token!;
     req.user = user;
     next();
   } catch (e) {
-    res.status(CODES.UNAUTHORIZED).send("error: 'Please authenticate.'");
+    res.status(StatusCodes.UNAUTHORIZED).send("error: 'Please authenticate.'");
   }
 };
 

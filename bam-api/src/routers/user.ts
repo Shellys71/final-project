@@ -1,26 +1,28 @@
+import type { Request, Response } from "express";
+import type { AuthRequest } from "../types/express";
+
 const express = require("express");
 const User = require("../models/user");
 const auth = require("../middleware/auth");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 const router = new express.Router();
-const CODES = require("../utils/status-codes");
-
+const { StatusCodes } = require("http-status-codes");
 const nodemailer = require("nodemailer");
 
-router.post("/users", async (req, res) => {
+router.post("/users", async (req: Request, res: Response) => {
   const user = new User(req.body);
 
   try {
     await user.save();
     const token = await user.generateAuthToken();
-    res.status(CODES.CREATED).send({ user, token });
+    res.status(StatusCodes.CREATED).send({ user, token });
   } catch (e) {
-    res.status(CODES.BAD_REQUEST).send(e);
+    res.status(StatusCodes.BAD_REQUEST).send(e);
   }
 });
 
-router.post("/users/login", async (req, res) => {
+router.post("/users/login", async (req: Request, res: Response) => {
   try {
     const user = await User.findByCredentials(
       req.body.email,
@@ -29,24 +31,24 @@ router.post("/users/login", async (req, res) => {
     const token = await user.generateAuthToken();
     res.send({ user, token });
   } catch (e) {
-    res.status(CODES.BAD_REQUEST).send();
+    res.status(StatusCodes.BAD_REQUEST).send();
   }
 });
 
-router.post("/users/logout", auth, async (req, res) => {
+router.post("/users/logout", auth, async (req: AuthRequest, res: Response) => {
   try {
-    req.user.tokens = req.user.tokens.filter((token) => {
+    req.user.tokens = req.user.tokens.filter((token: { token: string }) => {
       return token.token !== req.token;
     });
     await req.user.save();
 
     res.send();
   } catch (e) {
-    res.status(CODES.INTERNAL_SERVER_ERROR).send();
+    res.status(StatusCodes.INTERNAL_SERVER_ERROR).send();
   }
 });
 
-router.post("/users/forgot-password", async (req, res) => {
+router.post("/users/forgot-password", async (req: Request, res: Response) => {
   const { email } = req.body;
   try {
     const existingUser = await User.findOne({ email });
@@ -73,7 +75,7 @@ router.post("/users/forgot-password", async (req, res) => {
       html: `<p>לחץ על הקישור בכדי להחליף את הסיסמא: <a href=${link}>${link}</a></p>`,
     };
 
-    transporter.sendMail(mailOptions, function (error, info) {
+    transporter.sendMail(mailOptions, function (error: any, info: any) {
       if (error) {
         console.log(error);
       } else {
@@ -81,18 +83,18 @@ router.post("/users/forgot-password", async (req, res) => {
       }
     });
 
-    res.status(CODES.CREATED).json({
+    res.status(StatusCodes.CREATED).json({
       message:
         "האימייל נשלח בהצלחה! תוכל להחליף סיסמא רק למשך 10 דקות לאחר קבלת האימייל.",
     });
   } catch (e) {
     res
-      .status(CODES.NOT_FOUND)
+      .status(StatusCodes.NOT_FOUND)
       .json({ message: "משהו השתבש בשליחת האימייל... נסה שוב מאוחר יותר." });
   }
 });
 
-router.post("/users/reset-password/", async (req, res) => {
+router.post("/users/reset-password/", async (req: Request, res: Response) => {
   const { token, password } = req.body;
 
   try {
@@ -109,10 +111,10 @@ router.post("/users/reset-password/", async (req, res) => {
       }
     );
 
-    res.status(CODES.CREATED).json({ message: "הסיסמא עודכנה בהצלחה!" });
+    res.status(StatusCodes.CREATED).json({ message: "הסיסמא עודכנה בהצלחה!" });
   } catch (e) {
     console.log(e);
-    res.status(CODES.INTERNAL_SERVER_ERROR).send();
+    res.status(StatusCodes.INTERNAL_SERVER_ERROR).send();
   }
 });
 

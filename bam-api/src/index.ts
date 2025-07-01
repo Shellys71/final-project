@@ -1,3 +1,5 @@
+import { Socket } from "socket.io";
+
 const express = require("express");
 require("dotenv").config();
 const cors = require("cors");
@@ -25,7 +27,7 @@ io.listen(process.env.EVENT_HANDLER_PORT, () => {
   );
 });
 
-io.on("connection", (socket) => {
+io.on("connection", (socket: Socket) => {
   console.log(`[INFO] WebSocket connection, ${socket.id}`);
 
   socket.on("approvedRequest", () => {

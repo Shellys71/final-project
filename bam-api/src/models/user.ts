@@ -1,3 +1,5 @@
+import { NextFunction } from "express";
+
 const mongoose = require("mongoose");
 const validator = require("validator");
 const bcrypt = require("bcryptjs");
@@ -13,7 +15,7 @@ const userSchema = mongoose.Schema({
     type: Number,
     unique: true,
     required: true,
-    validate(value) {
+    validate(value: number) {
       if (value < 1000000 || value > 9999999) {
         throw new Error("Number must have seven digits");
       }
@@ -25,7 +27,7 @@ const userSchema = mongoose.Schema({
     required: true,
     trim: true,
     lowercase: true,
-    validate(value) {
+    validate(value: string) {
       if (!validator.isEmail(value)) {
         throw new Error("Email is invalid");
       }
@@ -36,7 +38,7 @@ const userSchema = mongoose.Schema({
     required: true,
     minlength: 7,
     trim: true,
-    validate(value) {
+    validate(value: string) {
       if (value.toLowerCase().includes("password")) {
         throw new Error("Password is invalid");
       }
@@ -76,7 +78,7 @@ userSchema.methods.generateAuthToken = async function () {
   return token;
 };
 
-userSchema.statics.findByCredentials = async (email, password) => {
+userSchema.statics.findByCredentials = async (email: string, password: string) => {
   const user = await User.findOne({ email });
 
   if (!user) {
@@ -93,7 +95,7 @@ userSchema.statics.findByCredentials = async (email, password) => {
 };
 
 // Hash the plain text password before saving
-userSchema.pre("save", async function (next) {
+userSchema.pre("save", async function (this: typeof User, next: NextFunction) {
   const user = this;
 
   if (user.isModified("password")) {

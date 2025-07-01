@@ -34,6 +34,6 @@ const requestSchema = mongoose.Schema(
   }
 );
 
-const Request = mongoose.model("Request", requestSchema);
+const BamRequest = mongoose.model("Request", requestSchema);
 
-module.exports = Request;
+module.exports = BamRequest;
